@@ -102,4 +102,17 @@ function editTransaction(id){let t=transactions.find(x=>x.id===id);let d=prompt(
 function deleteTransaction(id){if(confirm("Delete this sample transaction?")){transactions=transactions.filter(t=>t.id!==id);save()}}
 render();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+  const supabaseUrl = "https://zmhovqgwetqqmfekngmc.supabase.co";
+  const supabaseKey = "sb_publishable_D4cj8-15E_h-O0PVqCHNAQ_ahnXqe4B";
+
+  window.supabaseClient = window.supabase.createClient(
+    supabaseUrl,
+    supabaseKey
+  );
+
+  console.log("Supabase connected successfully!");
+</script>
 </body></html>
