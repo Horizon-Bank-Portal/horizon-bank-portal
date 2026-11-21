@@ -158,5 +158,18 @@
     supabaseClient.auth.onAuthStateChange(async(event,session)=>{if(event==="SIGNED_OUT"){stopInactivityTimer();currentProfile=null;currentIsAdmin=false;showOnly("authView");}else if(event==="SIGNED_IN"&&session?.user){try{await routeUser(session.user);}catch(err){showMessage("authMessage",err.message||"Unable to load your account.","error");}}});
     (async()=>{try{const {data:{session}}=await supabaseClient.auth.getSession();if(session?.user){try{await routeUser(session.user);}catch(err){showOnly("authView");showMessage("authMessage",err.message||"Unable to load your account.","error");}}else{showOnly("authView");setAuthMode("login");}}catch(err){showOnly("authView");showMessage("authMessage","Unable to connect. Please refresh and try again.","error");}})();
   </script>
-</body>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6b01c75f1e4d633ce281270c/1k7vf5jli';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script--></body>
 </html>
