@@ -142,7 +142,7 @@ document.addEventListener("visibilitychange", () => {
       let query=supabaseClient.from("transactions").select("created_at,transaction_type,amount,description,status,reference").eq("user_id",user.id).order("created_at",{ascending:false}).limit(20);
       const {data:tx,error:txError}=await query;
       if(txError) throw txError;
-      $("customerTransactions").innerHTML=tx?.length?tx.map(t=>`<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleDateString():"—")}</td><td>${safe(t.description || t.reference || "Account activity")}</td><td>${safe(t.transaction_type || "—")}</td><td>${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status || "Processing")}</span></td></tr>`).join(""):'<tr><td colspan="5" class="empty">No account activity is available yet.</td></tr>';
+      $("customerTransactions").innerHTML=tx?.length?tx.map(t=>`<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleDateString():"—")}</td><td>${safe(t.description || t.reference || "Account activity")}</td><td>${safe(t.transaction_type || "—")}</td><td class="${String(t.transaction_type || '').toLowerCase() === 'credit' ? 'amount-credit' : String(t.transaction_type || '').toLowerCase() === 'debit' ? 'amount-debit' : ''}">${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status || "Processing")}</span></td></tr>`).join(""):'<tr><td colspan="5" class="empty">No account activity is available yet.</td></tr>';
     }
     async function loadAdminData() {
       const [{data:profiles,error:pErr},{data:accounts,error:aErr},{data:tx,error:tErr}]=await Promise.all([
