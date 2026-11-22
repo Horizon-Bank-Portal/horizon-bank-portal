@@ -106,7 +106,7 @@
       if(txError) throw txError;
       $("customerTransactions").innerHTML=tx?.length?tx.map(t=>{
         const recipientInfo=t.recipient_account_name||t.recipient_account_number?`<div class="customer-meta">${safe(t.recipient_account_name||"")} ${t.recipient_account_number?`· ${safe(t.recipient_account_number)}`:""}</div>`:"";
-        const type=String(t.transaction_type || "").toLowerCase(); const amountPrefix=type==="credit"?"+":type==="debit"?"−":""; const amountClass=type==="credit"?"amount-credit":type==="debit"?"amount-debit":""; return `<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleDateString():"—")}</td><td>${safe(t.description || t.reference || "Account activity")}${recipientInfo}</td><td>${safe(t.transaction_type || "—")}</td><td class="${amountClass}">${amountPrefix}${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status || "Processing")}</span></td></tr>`;
+        const type=String(t.transaction_type || "").toLowerCase(); const amountPrefix=type==="credit"?"+":type==="debit"?"−":""; const amountClass=type==="credit"?"amount-credit":type==="debit"?"amount-debit":""; return `<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleDateString():"—")}</td><td>${safe(t.description || t.reference || "Account activity")}${recipientInfo}</td><td>${safe(t.transaction_type || "—")}${type==="credit"?" (+)":type==="debit"?" (−)":""}</td><td class="${amountClass}">${amountPrefix}${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status || "Processing")}</span></td></tr>`;
       }).join(""):'<tr><td colspan="5" class="empty">No illustrative account activity is available yet.</td></tr>';
     }
     async function loadAdminData() {
