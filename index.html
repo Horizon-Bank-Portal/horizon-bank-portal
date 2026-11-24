@@ -188,7 +188,7 @@
       adminCustomerProfiles=list;adminCustomerAccounts=accounts||[];
       const pending=list.filter(p=>p.approval_status==="pending").length;
       const approved=list.filter(p=>p.approval_status==="approved").length;
-      $("adminCustomerCount").textContent=list.length;$("adminPendingCount").textContent=pending;$("adminApprovedCount").textContent=approved;$("adminPendingTransactions").textContent=pendingTransactionCount||0;$("adminAccountCount").textContent=(accounts||[]).length;
+      $("adminCustomerCount").textContent=list.length;$("adminPendingCount").textContent=pending;$("adminApprovedCount").textContent=approved;$("adminPendingTransactions").textContent=pendingTransactionCount||0;
       renderAdminCustomers();
       $("adminAccounts").innerHTML=accounts?.length?accounts.map(a=>{const p=list.find(x=>x.id===a.user_id);return `<tr><td>${safe(p?.full_name||a.user_id)}</td><td>${safe(a.account_name)}</td><td>${safe(a.account_number)}</td><td>${safe(a.account_type)}</td><td>${money(a.balance)}</td></tr>`}).join(""):'<tr><td colspan="5" class="empty">No demo account records found.</td></tr>';
 
