@@ -33,13 +33,13 @@
 
     <section id="rejectedView" class="hidden"><div class="card" style="max-width:720px;margin:50px auto;padding:36px"><div class="eyebrow">Registration status</div><h1 style="margin:8px 0 5px">We could not approve this registration</h1><p class="muted">Your registration has not been approved. Please contact the prototype administrator for further information.</p><button id="rejectedSignOut" class="secondary" type="button">Sign out</button></div></section>
 
-    <section id="customerView" class="hidden"><div class="app-head"><div><div class="eyebrow">Customer banking · prototype</div><h1 id="customerGreeting">Welcome</h1><div class="muted">Here is your illustrative account overview.</div></div><div class="toolbar"><button class="secondary" id="customerRefresh" type="button">Refresh information</button></div></div><div class="grid"><div class="card balance-card"><div class="muted">Illustrative account balance</div><div class="amount" id="customerBalance">—</div><div class="muted" id="accountLabel">Account information</div></div><div class="card"><div class="muted">Account type</div><div class="metric" id="accountType">—</div><div class="muted small">Demo account record</div></div><div class="card"><div class="muted">Account status</div><div class="metric" id="customerStatus">Approved</div><div class="muted small">Profile verification</div></div></div>
-      <div class="card section"><div class="section-title"><h2>Illustrative transfer request</h2><span class="muted small">Personal Banking That Still Feels Personal</span></div><form id="transferForm">
+    <section id="customerView" class="hidden"><div class="app-head"><div><div class="eyebrow">Customer banking · prototype</div><h1 id="customerGreeting">Welcome</h1><div class="muted">Here is your account overview.</div></div><div class="toolbar"><button class="secondary" id="customerRefresh" type="button">Refresh information</button></div></div><div class="grid"><div class="card balance-card"><div class="muted">Account balance</div><div class="amount" id="customerBalance">—</div><div class="muted" id="accountLabel">Account information</div></div><div class="card"><div class="muted">Account type</div><div class="metric" id="accountType">—</div><div class="muted small">Demo account record</div></div><div class="card"><div class="muted">Account status</div><div class="metric" id="customerStatus">Approved</div><div class="muted small">Profile verification</div></div></div>
+      <div class="card section"><div class="section-title"><h2>Transfer request</h2><span class="muted small">Personal Banking That Still Feels Personal</span></div><form id="transferForm">
         <div class="field"><label for="transferAccountName">Account Name</label><input id="transferAccountName" type="text" maxlength="120" autocomplete="off" required></div>
         <div class="field"><label for="transferAccountNumber">Account Number</label><input id="transferAccountNumber" type="text" maxlength="80" autocomplete="off" required></div>
-        <div class="field"><label for="transferAmount">Amount (illustrative USD)</label><input id="transferAmount" type="number" min="0.01" step="0.01" required></div>
-        <button class="primary" id="transferSubmit" type="submit">Submit illustrative request</button><p class="fineprint">This creates a pending illustrative record for administrator review. It does not send money or deduct funds when submitted. Any displayed balance and activity are demo data only.</p></form><div id="transferMessage" aria-live="polite"></div></div>
-      <div class="card section"><div class="section-title"><h2>Recent account activity</h2><span class="muted small">Illustrative records</span></div><div class="table-wrap"><table><thead><tr><th>Date &amp; time</th><th>Description / recipient</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody id="customerTransactions"><tr><td colspan="5" class="empty">Loading account activity…</td></tr></tbody></table></div></div><div id="customerMessage" aria-live="polite"></div></section>
+        <div class="field"><label for="transferAmount">Amount USD</label><input id="transferAmount" type="number" min="0.01" step="0.01" required></div>
+        <button class="primary" id="transferSubmit" type="submit">Submit request</button><p class="fineprint">This creates a pending illustrative record for administrator review. It does not send money or deduct funds when submitted. Any displayed balance and activity are demo data only.</p></form><div id="transferMessage" aria-live="polite"></div></div>
+      <div class="card section"><div class="section-title"><h2>Recent account activity</h2><span class="muted small">Records</span></div><div class="table-wrap"><table><thead><tr><th>Date &amp; time</th><th>Description / recipient</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody id="customerTransactions"><tr><td colspan="5" class="empty">Loading account activity…</td></tr></tbody></table></div></div><div id="customerMessage" aria-live="polite"></div></section>
 
     <section id="adminView" class="hidden"><div class="app-head"><div><div class="eyebrow">Administration · prototype</div><h1>Administrator overview</h1><div class="muted">Review demo registrations and illustrative customer records.</div></div><div class="toolbar"><button class="secondary" id="adminRefresh" type="button">Refresh records</button></div></div><div class="grid"><div class="card"><div class="muted">Total customers</div><div class="metric" id="adminCustomerCount">—</div></div><div class="card"><div class="muted">Pending registrations</div><div class="metric" id="adminPendingCount">—</div></div><div class="card"><div class="muted">Approved customers</div><div class="metric" id="adminApprovedCount">—</div></div><div class="card"><div class="muted">Pending transaction requests</div><div class="metric" id="adminPendingTransactions">—</div></div></div><div class="card section"><div class="section-title"><h2>Customer registrations</h2><span class="muted small">Review and update status</span></div><input class="admin-search" id="adminCustomerSearch" type="search" placeholder="Search name, email, or account number" aria-label="Search customers"><div id="adminCustomers"><div class="empty">Loading customer profiles…</div></div></div><div class="card section"><div class="section-title"><h2>Account records</h2></div><div class="table-wrap"><table><thead><tr><th>Customer</th><th>Account name</th><th>Account number</th><th>Type</th><th>Illustrative balance</th></tr></thead><tbody id="adminAccounts"><tr><td colspan="5" class="empty">Loading account records…</td></tr></tbody></table></div></div>
       <div class="card section">
@@ -55,7 +55,7 @@
             </select>
           </div>
           <div class="field">
-            <label for="creditAmount">Credit amount (illustrative USD)</label>
+            <label for="creditAmount">Credit Amount USD</label>
             <input id="creditAmount" type="number" min="0.01" step="0.01" required>
           </div>
           <div class="field">
@@ -190,7 +190,7 @@
       const approved=list.filter(p=>p.approval_status==="approved").length;
       $("adminCustomerCount").textContent=list.length;$("adminPendingCount").textContent=pending;$("adminApprovedCount").textContent=approved;$("adminPendingTransactions").textContent=pendingTransactionCount||0;
       renderAdminCustomers();
-      $("adminAccounts").innerHTML=accounts?.length?accounts.map(a=>{const p=list.find(x=>x.id===a.user_id);return `<tr><td>${safe(p?.full_name||a.user_id)}</td><td>${safe(a.account_name)}</td><td>${safe(a.account_number)}</td><td>${safe(a.account_type)}</td><td>${money(a.balance)}</td></tr>`}).join(""):'<tr><td colspan="5" class="empty">No demo account records found.</td></tr>';
+      $("adminAccounts").innerHTML=accounts?.length?accounts.map(a=>{const p=list.find(x=>x.id===a.user_id);return `<tr><td>${safe(p?.full_name||a.user_id)}</td><td>${safe(a.account_name)}</td><td>${safe(a.account_number)}</td><td>${safe(a.account_type)}</td><td>${money(a.balance)}</td></tr>`}).join(""):'<tr><td colspan="5" class="empty">No Account record found.</td></tr>';
 
       const eligibleAccounts=(accounts||[]).filter(a=>{
         const p=(profiles||[]).find(x=>x.id===a.user_id);
@@ -208,7 +208,7 @@
       }
 
       $("adminTransactions").innerHTML=tx?.length?tx.map(t=>{
-        const isTransfer=t.transaction_type==="Debit"&&t.description==="Illustrative transfer request";
+        const isTransfer=t.transaction_type==="Debit"&&t.description==="Transfer request";
         const action=isTransfer&&t.status==="Pending"?`<button class="primary" type="button" data-review="${safe(t.id)}" data-new-status="Successful">Approve demo</button> <button class="danger" type="button" data-review="${safe(t.id)}" data-new-status="Declined">Decline</button>`:isTransfer&&t.status==="Successful"?`<button class="danger" type="button" data-review="${safe(t.id)}" data-new-status="Reversed">Reverse demo</button>`:"";
         const type=String(t.transaction_type||"").toLowerCase();
         const prefix=type==="credit"?"+":type==="debit"?"−":"";
