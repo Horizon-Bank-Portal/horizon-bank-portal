@@ -208,7 +208,7 @@
       }
 
       $("adminTransactions").innerHTML=tx?.length?tx.map(t=>{
-        const isTransfer=t.transaction_type==="Debit"&&t.description==="Transfer request";
+         const isTransfer=t.transaction_type==="Debit"&&["Transfer request","Illustrative transfer request"].includes(t.description);
         const action=isTransfer&&t.status==="Pending"?`<button class="primary" type="button" data-review="${safe(t.id)}" data-new-status="Successful">Approve demo</button> <button class="danger" type="button" data-review="${safe(t.id)}" data-new-status="Declined">Decline</button>`:isTransfer&&t.status==="Successful"?`<button class="danger" type="button" data-review="${safe(t.id)}" data-new-status="Reversed">Reverse demo</button>`:"";
         const type=String(t.transaction_type||"").toLowerCase();
         const prefix=type==="credit"?"+":type==="debit"?"−":"";
