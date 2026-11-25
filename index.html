@@ -132,7 +132,13 @@
       const {data:adminFlag,error:adminError}=await supabaseClient.rpc("is_admin");
       if(!adminError && adminFlag===true) { currentIsAdmin=true; await loadAdminData(); showOnly("adminView"); startInactivityTimer(); return; }
       currentIsAdmin=false;
-      const profile=await loadProfile(user);
+      let profile = null;
+      try {
+        profile = await loadProfile(user);
+      } catch (err) {
+        await denyDeletedCustomerAccess("This customer account has been deleted and can no longer sign in.");
+        return;
+      }
       if(!profile) {
         await denyDeletedCustomerAccess("This customer account has been deleted and can no longer sign in.");
         return;
