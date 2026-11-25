@@ -180,11 +180,21 @@
           ["Account access",p.account_status||"active"],["Registered",p.created_at?new Date(p.created_at).toLocaleString():"—"]
         ];
         const summary=`<div class="details-grid">${cells.map(([label,value])=>`<div class="detail-cell"><div class="muted">${safe(label)}</div><div class="detail-value">${safe(value)}</div></div>`).join("")}</div>`;
-        const rows=history?.length?history.map(t=>`<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleString():"—")}</td><td>${safe(t.description||t.reference||"Account activity")}</td><td>${safe(t.transaction_type||"—")}</td><td>${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status||"—")}</span></td></tr>`).join(""):'<tr><td colspan="5" class="empty">No illustrative transaction history found.</td></tr>';
-        $("customerDetailsContent").innerHTML=summary+`<div class="section"><h3>Illustrative transaction history</h3><div class="table-wrap"><table><thead><tr><th>Date &amp; time</th><th>Description</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div><p class="fineprint">All balances and transactions shown here are illustrative demo data only. No real money is held, deposited, or transferred.</p></div>`;
+        const rows=history?.length?history.map(t=>`<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleString():"—")}</td><td>${safe(t.description||t.reference||"Account activity")}</td><td>${safe(t.transaction_type||"—")}</td><td>${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status||"—")}</span></td><td>${currentIsAdmin?`<button class="danger" type="button" data-delete-tx="${safe(t.id)}" data-detail-user="${safe(userId)}">Delete</button>`:""}</td></tr>`).join(""):'<tr><td colspan="6" class="empty">No illustrative transaction history found.</td></tr>';
+        $("customerDetailsContent").innerHTML=summary+`<div class="section"><h3>Illustrative transaction history</h3><div class="table-wrap"><table><thead><tr><th>Date &amp; time</th><th>Description</th><th>Type</th><th>Amount</th><th>Status</th>${currentIsAdmin?"<th>Action</th>":""}</tr></thead><tbody>${rows}</tbody></table></div><p class="fineprint">All balances and transactions shown here are illustrative demo data only. No real money is held, deposited, or transferred.</p></div>`;
       } catch(err) {
         $("customerDetailsContent").innerHTML=`<div class="message error">${safe(err.message||"Unable to load transaction history.")}</div>`;
       }
+    }
+    async function deleteAdminTransaction(transactionId) {
+      if(!confirm("Are you sure you want to permanently delete this illustrative transaction record?")) return false;
+      const {error}=await supabaseClient.rpc("admin_delete_demo_transaction",{
+        p_transaction_id:Number(transactionId)
+      });
+      if(error) throw error;
+      await loadAdminData();
+      showMessage("adminMessage","Illustrative transaction record deleted.","success");
+      return true;
     }
     async function loadAdminData() {
       const [{data:profiles,error:pErr},{data:accounts,error:aErr},{data:tx,error:tErr},{count:pendingTransactionCount,error:ptErr}]=await Promise.all([
@@ -221,7 +231,9 @@
 
       $("adminTransactions").innerHTML=tx?.length?tx.map(t=>{
          const isTransfer=t.transaction_type==="Debit"&&["Transfer request","Illustrative transfer request"].includes(t.description);
-        const action=isTransfer&&t.status==="Pending"?`<button class="primary" type="button" data-review="${safe(t.id)}" data-new-status="Successful">Approve demo</button> <button class="danger" type="button" data-review="${safe(t.id)}" data-new-status="Declined">Decline</button>`:isTransfer&&t.status==="Successful"?`<button class="danger" type="button" data-review="${safe(t.id)}" data-new-status="Reversed">Reverse demo</button>`:"";
+        const reviewBtns=isTransfer&&t.status==="Pending"?`<button class="primary" type="button" data-review="${safe(t.id)}" data-new-status="Successful">Approve demo</button> <button class="danger" type="button" data-review="${safe(t.id)}" data-new-status="Declined">Decline</button>`:isTransfer&&t.status==="Successful"?`<button class="danger" type="button" data-review="${safe(t.id)}" data-new-status="Reversed">Reverse demo</button>`:"";
+        const deleteBtn=`<button class="danger" type="button" data-delete-tx="${safe(t.id)}">Delete</button>`;
+        const action=`<div class="toolbar">${reviewBtns}${deleteBtn}</div>`;
         const type=String(t.transaction_type||"").toLowerCase();
         const prefix=type==="credit"?"+":type==="debit"?"−":"";
         const amountClass=type==="credit"?"amount-credit":type==="debit"?"amount-debit":"";
@@ -307,7 +319,30 @@
         btn.disabled=false;
       }
     });
-    $("adminTransactions").addEventListener("click",async e=>{const btn=e.target.closest("button[data-review]");if(!btn)return;const newStatus=btn.dataset.newStatus;if(!confirm(`Are you sure you want to mark this illustrative demo request ${newStatus}?`))return;btn.disabled=true;try{const {error}=await supabaseClient.rpc("review_demo_transfer",{p_transaction_id:btn.dataset.review,p_new_status:newStatus});if(error)throw error;await loadAdminData();showMessage("adminMessage",`Illustrative demo request marked ${newStatus}.`,"success");}catch(err){showMessage("adminMessage",err.message||"Unable to review this request.","error");}finally{btn.disabled=false;}});
+    $("adminTransactions").addEventListener("click",async e=>{
+      const delBtn=e.target.closest("button[data-delete-tx]");
+      if(delBtn){
+        delBtn.disabled=true;
+        try{await deleteAdminTransaction(delBtn.dataset.deleteTx);}
+        catch(err){showMessage("adminMessage",err.message||"Unable to delete transaction.","error");}
+        finally{if(delBtn)delBtn.disabled=false;}
+        return;
+      }
+      const btn=e.target.closest("button[data-review]");if(!btn)return;const newStatus=btn.dataset.newStatus;if(!confirm(`Are you sure you want to mark this illustrative demo request ${newStatus}?`))return;btn.disabled=true;try{const {error}=await supabaseClient.rpc("review_demo_transfer",{p_transaction_id:btn.dataset.review,p_new_status:newStatus});if(error)throw error;await loadAdminData();showMessage("adminMessage",`Illustrative demo request marked ${newStatus}.`,"success");}catch(err){showMessage("adminMessage",err.message||"Unable to review this request.","error");}finally{btn.disabled=false;}
+    });
+    $("customerDetailsContent").addEventListener("click",async e=>{
+      const delBtn=e.target.closest("button[data-delete-tx]");
+      if(!delBtn)return;
+      delBtn.disabled=true;
+      try{
+        const deleted=await deleteAdminTransaction(delBtn.dataset.deleteTx);
+        if(deleted && delBtn.dataset.detailUser) await showCustomerDetails(delBtn.dataset.detailUser);
+      }catch(err){
+        $("customerDetailsContent").insertAdjacentHTML("afterbegin",`<div class="message error">${safe(err.message||"Unable to delete transaction.")}</div>`);
+      }finally{
+        if(delBtn)delBtn.disabled=false;
+      }
+    });
     $("customerRefresh").addEventListener("click",async()=>{try{const {data:{user}}=await supabaseClient.auth.getUser();if(user)await loadCustomerData(user);showMessage("customerMessage","Demo account information refreshed.","success");}catch(e){showMessage("customerMessage",e.message,"error");}});
     $("adminRefresh").addEventListener("click",async()=>{try{await loadAdminData();showMessage("adminMessage","Records refreshed.","success");}catch(e){showMessage("adminMessage",e.message,"error");}});
     $("adminCustomerSearch").addEventListener("input",renderAdminCustomers);
