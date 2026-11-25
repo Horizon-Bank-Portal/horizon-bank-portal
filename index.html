@@ -114,6 +114,15 @@
     ["pointerdown", "keydown", "touchstart", "scroll"].forEach(eventName => { document.addEventListener(eventName, () => { if (currentProfile || currentIsAdmin) resetInactivityTimer(); }, { passive: true }); });
     document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && (currentProfile || currentIsAdmin)) { if (Date.now() - lastActivityAt >= INACTIVITY_LIMIT) autoSignOut().catch(() => {}); else resetInactivityTimer(); } });
     async function signOut() { stopInactivityTimer(); await supabaseClient.auth.signOut(); currentProfile=null;currentIsAdmin=false;showOnly("authView");setAuthMode("login"); }
+    async function denyDeletedCustomerAccess(reason = "This customer account has been deleted and can no longer sign in.") {
+      stopInactivityTimer();
+      currentProfile = null;
+      currentIsAdmin = false;
+      await supabaseClient.auth.signOut();
+      showOnly("authView");
+      setAuthMode("login");
+      showMessage("authMessage", reason, "error");
+    }
     async function loadProfile(user) {
       const {data,error}=await supabaseClient.from("profiles").select("id,full_name,email,phone_number,approval_status,account_status").eq("id",user.id).maybeSingle();
       if(error) throw error; currentProfile=data; return data;
@@ -124,8 +133,14 @@
       if(!adminError && adminFlag===true) { currentIsAdmin=true; await loadAdminData(); showOnly("adminView"); startInactivityTimer(); return; }
       currentIsAdmin=false;
       const profile=await loadProfile(user);
-      if(!profile) { showMessage("authMessage","Your profile could not be found. Please contact the prototype administrator.","error"); await supabaseClient.auth.signOut(); return; }
-      if(profile.account_status==="suspended" || profile.account_status==="deactivated") { showOnly("authView"); setAuthMode("login"); showMessage("authMessage",`Customer access is ${profile.account_status}. Please contact the prototype administrator.`,"error"); await supabaseClient.auth.signOut(); return; }
+      if(!profile) {
+        await denyDeletedCustomerAccess("This customer account has been deleted and can no longer sign in.");
+        return;
+      }
+      if(profile.account_status==="suspended" || profile.account_status==="deactivated" || profile.account_status==="deleted") {
+        await denyDeletedCustomerAccess(`Customer access is ${profile.account_status}. Please contact the prototype administrator.`);
+        return;
+      }
       if(profile.approval_status==="pending") { showOnly("pendingView"); return; }
       if(profile.approval_status==="rejected") { showOnly("rejectedView"); return; }
       if(profile.approval_status!=="approved") { showMessage("authMessage","Your profile status could not be verified. Please contact the prototype administrator.","error"); return; }
@@ -160,8 +175,19 @@
         const accessStatus=p.account_status||"active";
         const customerAccount=adminCustomerAccounts.find(a=>a.user_id===p.id);
         const accountNumber=customerAccount?.account_number || "Not assigned";
-        return `<div class="customer-item"><div><div class="customer-name">${safe(p.full_name)}</div><div class="customer-meta">${safe(p.email)} · ${safe(p.phone_number)}</div><div class="customer-meta">Account number: <strong>${safe(accountNumber)}</strong></div><div class="customer-meta">Registered ${safe(p.created_at?new Date(p.created_at).toLocaleDateString():"—")} · Approval: <span class="pill ${safe(p.approval_status)}">${safe(p.approval_status)}</span> · Access: <span class="pill ${safe(accessStatus)}">${safe(accessStatus)}</span></div></div><div class="toolbar"><button class="secondary" type="button" data-customer-details="${safe(p.id)}">View details</button>${p.approval_status!=="approved"?`<button class="primary" type="button" data-profile="${safe(p.id)}" data-status="approved">Approve</button>`:""}${p.approval_status!=="rejected"?`<button class="danger" type="button" data-profile="${safe(p.id)}" data-status="rejected">Reject</button>`:""}${accessStatus!=="suspended"?`<button class="secondary" type="button" data-access-profile="${safe(p.id)}" data-access-status="suspended">Suspend</button>`:""}${accessStatus!=="deactivated"?`<button class="danger" type="button" data-access-profile="${safe(p.id)}" data-access-status="deactivated">Deactivate</button>`:""}${accessStatus!=="active"?`<button class="primary" type="button" data-access-profile="${safe(p.id)}" data-access-status="active">Reactivate</button>`:""}</div></div>`;
+        return `<div class="customer-item"><div><div class="customer-name">${safe(p.full_name)}</div><div class="customer-meta">${safe(p.email)} · ${safe(p.phone_number)}</div><div class="customer-meta">Account number: <strong>${safe(accountNumber)}</strong></div><div class="customer-meta">Registered ${safe(p.created_at?new Date(p.created_at).toLocaleDateString():"—")} · Approval: <span class="pill ${safe(p.approval_status)}">${safe(p.approval_status)}</span> · Access: <span class="pill ${safe(accessStatus)}">${safe(accessStatus)}</span></div></div><div class="toolbar"><button class="secondary" type="button" data-customer-details="${safe(p.id)}">View details</button>${p.approval_status!=="approved"?`<button class="primary" type="button" data-profile="${safe(p.id)}" data-status="approved">Approve</button>`:""}${p.approval_status!=="rejected"?`<button class="danger" type="button" data-profile="${safe(p.id)}" data-status="rejected">Reject</button>`:""}${accessStatus!=="suspended"?`<button class="secondary" type="button" data-access-profile="${safe(p.id)}" data-access-status="suspended">Suspend</button>`:""}${accessStatus!=="deactivated"?`<button class="danger" type="button" data-access-profile="${safe(p.id)}" data-access-status="deactivated">Deactivate</button>`:""}${accessStatus!=="active"?`<button class="primary" type="button" data-access-profile="${safe(p.id)}" data-access-status="active">Reactivate</button>`:""}<button class="danger" type="button" data-delete-customer="${safe(p.id)}" data-customer-name="${safe(p.full_name||p.email||"this customer")}">Delete account</button></div></div>`;
       }).join(""):'<div class="empty">No matching customer records found.</div>';
+    }
+    async function deleteAdminCustomer(userId, customerLabel = "this customer") {
+      if(!confirm(`Are you sure you want to permanently delete ${customerLabel}'s account and immediately block their login access? This will remove their profile, account record, and transaction history.`)) return false;
+      const {error}=await supabaseClient.rpc("admin_delete_demo_customer",{
+        p_user_id:userId
+      });
+      if(error) throw error;
+      $("customerDetailsModal").classList.add("hidden");
+      await loadAdminData();
+      showMessage("adminMessage","Customer account deleted and login access blocked.","success");
+      return true;
     }
     async function showCustomerDetails(userId) {
       const p=adminCustomerProfiles.find(x=>x.id===userId);
@@ -181,7 +207,8 @@
         ];
         const summary=`<div class="details-grid">${cells.map(([label,value])=>`<div class="detail-cell"><div class="muted">${safe(label)}</div><div class="detail-value">${safe(value)}</div></div>`).join("")}</div>`;
         const rows=history?.length?history.map(t=>`<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleString():"—")}</td><td>${safe(t.description||t.reference||"Account activity")}</td><td>${safe(t.transaction_type||"—")}</td><td>${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status||"—")}</span></td><td>${currentIsAdmin?`<button class="danger" type="button" data-delete-tx="${safe(t.id)}" data-detail-user="${safe(userId)}">Delete</button>`:""}</td></tr>`).join(""):'<tr><td colspan="6" class="empty">No illustrative transaction history found.</td></tr>';
-        $("customerDetailsContent").innerHTML=summary+`<div class="section"><h3>Illustrative transaction history</h3><div class="table-wrap"><table><thead><tr><th>Date &amp; time</th><th>Description</th><th>Type</th><th>Amount</th><th>Status</th>${currentIsAdmin?"<th>Action</th>":""}</tr></thead><tbody>${rows}</tbody></table></div><p class="fineprint">All balances and transactions shown here are illustrative demo data only. No real money is held, deposited, or transferred.</p></div>`;
+        const dangerZone=currentIsAdmin?`<div class="section" style="padding-top:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><strong>Delete customer account</strong><div class="muted small">Removes profile, account record, and transactions and immediately denies login.</div></div><button class="danger" type="button" data-delete-customer="${safe(userId)}" data-customer-name="${safe(p.full_name||p.email||"this customer")}">Delete account</button></div>`:"";
+        $("customerDetailsContent").innerHTML=summary+`<div class="section"><h3>Illustrative transaction history</h3><div class="table-wrap"><table><thead><tr><th>Date &amp; time</th><th>Description</th><th>Type</th><th>Amount</th><th>Status</th>${currentIsAdmin?"<th>Action</th>":""}</tr></thead><tbody>${rows}</tbody></table></div><p class="fineprint">All balances and transactions shown here are illustrative demo data only. No real money is held, deposited, or transferred.</p></div>`+dangerZone;
       } catch(err) {
         $("customerDetailsContent").innerHTML=`<div class="message error">${safe(err.message||"Unable to load transaction history.")}</div>`;
       }
@@ -331,6 +358,14 @@
       const btn=e.target.closest("button[data-review]");if(!btn)return;const newStatus=btn.dataset.newStatus;if(!confirm(`Are you sure you want to mark this illustrative demo request ${newStatus}?`))return;btn.disabled=true;try{const {error}=await supabaseClient.rpc("review_demo_transfer",{p_transaction_id:btn.dataset.review,p_new_status:newStatus});if(error)throw error;await loadAdminData();showMessage("adminMessage",`Illustrative demo request marked ${newStatus}.`,"success");}catch(err){showMessage("adminMessage",err.message||"Unable to review this request.","error");}finally{btn.disabled=false;}
     });
     $("customerDetailsContent").addEventListener("click",async e=>{
+      const delCustBtn=e.target.closest("button[data-delete-customer]");
+      if(delCustBtn){
+        delCustBtn.disabled=true;
+        try{await deleteAdminCustomer(delCustBtn.dataset.deleteCustomer,delCustBtn.dataset.customerName);}
+        catch(err){$("customerDetailsContent").insertAdjacentHTML("afterbegin",`<div class="message error">${safe(err.message||"Unable to delete customer account.")}</div>`);}
+        finally{if(delCustBtn)delCustBtn.disabled=false;}
+        return;
+      }
       const delBtn=e.target.closest("button[data-delete-tx]");
       if(!delBtn)return;
       delBtn.disabled=true;
@@ -346,7 +381,17 @@
     $("customerRefresh").addEventListener("click",async()=>{try{const {data:{user}}=await supabaseClient.auth.getUser();if(user)await loadCustomerData(user);showMessage("customerMessage","Demo account information refreshed.","success");}catch(e){showMessage("customerMessage",e.message,"error");}});
     $("adminRefresh").addEventListener("click",async()=>{try{await loadAdminData();showMessage("adminMessage","Records refreshed.","success");}catch(e){showMessage("adminMessage",e.message,"error");}});
     $("adminCustomerSearch").addEventListener("input",renderAdminCustomers);
-    $("adminCustomers").addEventListener("click",async e=>{const details=e.target.closest("button[data-customer-details]");if(details){await showCustomerDetails(details.dataset.customerDetails);return;}const btn=e.target.closest("button[data-profile]");if(!btn)return;btn.disabled=true;try{await updateApproval(btn.dataset.profile,btn.dataset.status);}catch(err){showMessage("adminMessage",err.message||"Unable to update registration.","error");}finally{btn.disabled=false;}});
+    $("adminCustomers").addEventListener("click",async e=>{
+      const delCust=e.target.closest("button[data-delete-customer]");
+      if(delCust){
+        delCust.disabled=true;
+        try{await deleteAdminCustomer(delCust.dataset.deleteCustomer,delCust.dataset.customerName);}
+        catch(err){showMessage("adminMessage",err.message||"Unable to delete customer account.","error");}
+        finally{if(delCust)delCust.disabled=false;}
+        return;
+      }
+      const details=e.target.closest("button[data-customer-details]");if(details){await showCustomerDetails(details.dataset.customerDetails);return;}const btn=e.target.closest("button[data-profile]");if(!btn)return;btn.disabled=true;try{await updateApproval(btn.dataset.profile,btn.dataset.status);}catch(err){showMessage("adminMessage",err.message||"Unable to update registration.","error");}finally{btn.disabled=false;}
+    });
     $("closeCustomerDetails").addEventListener("click",()=>$("customerDetailsModal").classList.add("hidden"));
     $("customerDetailsModal").addEventListener("click",e=>{if(e.target.id==="customerDetailsModal")$("customerDetailsModal").classList.add("hidden");});
     document.addEventListener("keydown",e=>{if(e.key==="Escape")$("customerDetailsModal").classList.add("hidden");});
