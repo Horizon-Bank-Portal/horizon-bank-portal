@@ -97,6 +97,13 @@
     const $ = (id) => document.getElementById(id);
     const money = (value) => new Intl.NumberFormat("en-US", {style:"currency", currency:"USD"}).format(Number(value || 0));
     const safe = (value) => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    const formatTxLabel = (value, status = "") => {
+      const raw = String(value ?? "").trim();
+      if (/^illustrative transfer request$/i.test(raw)) return "Transfer request";
+      if (/^reversal of illustrative( demo)? transfer$/i.test(raw)) return "Reversal";
+      if (!raw && String(status).toLowerCase() === "reversed") return "Reversal";
+      return raw || "Account activity";
+    };
     function showMessage(target, text, type="") { const el=$(target); el.className=text ? `message ${type}` : ""; el.textContent=text || ""; }
     function showOnly(id) { ["authView","pendingView","rejectedView","customerView","adminView"].forEach(v=>$(v).classList.toggle("hidden",v!==id)); $("signOutBtn").classList.toggle("hidden",id==="authView"); $("topStatus").textContent=id==="adminView"?"Administrator access":id==="customerView"?"Customer preview access":"Secure customer access"; }
     function setAuthMode(mode) { const login=mode==="login"; $("loginForm").classList.toggle("hidden",!login); $("registerForm").classList.toggle("hidden",login); $("loginTab").classList.toggle("active",login); $("registerTab").classList.toggle("active",!login); $("authTitle").textContent=login?"Sign in to your account":"Open an account"; $("authSubtitle").textContent=login?"Enter your details to continue.":"Complete the details below to submit your registration."; showMessage("authMessage",""); }
@@ -189,7 +196,7 @@
       if(txError) throw txError;
       $("customerTransactions").innerHTML=tx?.length?tx.map(t=>{
         const recipientInfo=t.recipient_account_name||t.recipient_account_number?`<div class="customer-meta">${safe(t.recipient_account_name||"")} ${t.recipient_account_number?`· ${safe(t.recipient_account_number)}`:""}</div>`:"";
-        const type=String(t.transaction_type || "").toLowerCase(); const amountPrefix=type==="credit"?"+":type==="debit"?"−":""; const amountClass=type==="credit"?"amount-credit":type==="debit"?"amount-debit":""; return `<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleString():"—")}</td><td>${safe(t.description || t.reference || "Account activity")}${recipientInfo}</td><td>${safe(t.transaction_type || "—")}</td><td class="${amountClass}">${amountPrefix}${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status || "Processing")}</span></td></tr>`;
+        const type=String(t.transaction_type || "").toLowerCase(); const amountPrefix=type==="credit"?"+":type==="debit"?"−":""; const amountClass=type==="credit"?"amount-credit":type==="debit"?"amount-debit":""; return `<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleString():"—")}</td><td>${safe(formatTxLabel(t.description || t.reference, t.status))}${recipientInfo}</td><td>${safe(t.transaction_type || "—")}</td><td class="${amountClass}">${amountPrefix}${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status || "Processing")}</span></td></tr>`;
       }).join(""):'<tr><td colspan="5" class="empty">No illustrative account activity is available yet.</td></tr>';
     }
     let adminCustomerProfiles = [];
@@ -235,7 +242,7 @@
           ["Account access",p.account_status||"active"],["Registered",p.created_at?new Date(p.created_at).toLocaleString():"—"]
         ];
         const summary=`<div class="details-grid">${cells.map(([label,value])=>`<div class="detail-cell"><div class="muted">${safe(label)}</div><div class="detail-value">${safe(value)}</div></div>`).join("")}</div>`;
-        const rows=history?.length?history.map(t=>`<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleString():"—")}</td><td>${safe(t.description||t.reference||"Account activity")}</td><td>${safe(t.transaction_type||"—")}</td><td>${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status||"—")}</span></td><td>${currentIsAdmin?`<button class="danger" type="button" data-delete-tx="${safe(t.id)}" data-detail-user="${safe(userId)}">Delete</button>`:""}</td></tr>`).join(""):'<tr><td colspan="6" class="empty">No illustrative transaction history found.</td></tr>';
+        const rows=history?.length?history.map(t=>`<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleString():"—")}</td><td>${safe(formatTxLabel(t.description||t.reference, t.status))}</td><td>${safe(t.transaction_type||"—")}</td><td>${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status||"—")}</span></td><td>${currentIsAdmin?`<button class="danger" type="button" data-delete-tx="${safe(t.id)}" data-detail-user="${safe(userId)}">Delete</button>`:""}</td></tr>`).join(""):'<tr><td colspan="6" class="empty">No illustrative transaction history found.</td></tr>';
         const dangerZone=currentIsAdmin?`<div class="section" style="padding-top:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><strong>Delete customer account</strong><div class="muted small">Removes profile, account record, and transactions and immediately denies login.</div></div><button class="danger" type="button" data-delete-customer="${safe(userId)}" data-customer-name="${safe(p.full_name||p.email||"this customer")}">Delete account</button></div>`:"";
         $("customerDetailsContent").innerHTML=summary+`<div class="section"><h3>Illustrative transaction history</h3><div class="table-wrap"><table><thead><tr><th>Date &amp; time</th><th>Description</th><th>Type</th><th>Amount</th><th>Status</th>${currentIsAdmin?"<th>Action</th>":""}</tr></thead><tbody>${rows}</tbody></table></div><p class="fineprint">All balances and transactions shown here are illustrative demo data only. No real money is held, deposited, or transferred.</p></div>`+dangerZone;
       } catch(err) {
@@ -293,7 +300,7 @@
         const type=String(t.transaction_type||"").toLowerCase();
         const prefix=type==="credit"?"+":type==="debit"?"−":"";
         const amountClass=type==="credit"?"amount-credit":type==="debit"?"amount-debit":"";
-        return `<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleString():"—")}</td><td>${safe(t.user_id)}</td><td>${safe(t.description||"—")}</td><td>${safe(t.recipient_account_name||"—")}</td><td>${safe(t.recipient_account_number||"—")}</td><td>${safe(t.transaction_type||"—")}</td><td class="${amountClass}">${prefix}${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status||"—")}</span></td><td>${action}</td></tr>`;
+        return `<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleString():"—")}</td><td>${safe(t.user_id)}</td><td>${safe(formatTxLabel(t.description, t.status))}</td><td>${safe(t.recipient_account_name||"—")}</td><td>${safe(t.recipient_account_number||"—")}</td><td>${safe(t.transaction_type||"—")}</td><td class="${amountClass}">${prefix}${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status||"—")}</span></td><td>${action}</td></tr>`;
       }).join(""):'<tr><td colspan="9" class="empty">No illustrative transactions found.</td></tr>';
     }
     async function updateApproval(userId,status) {
@@ -333,7 +340,7 @@
         if(error)throw error;
         $("transferForm").reset();
         const {data:{user}}=await supabaseClient.auth.getUser();if(user)await loadCustomerData(user);
-        showMessage("transferMessage","Your illustrative request is pending administrator review. No money has been sent or deducted.","success");
+        showMessage("transferMessage","Your transfer request is pending administrator review. No money has been sent or deducted.","success");
       }catch(err){showMessage("transferMessage",err.message||"Unable to submit the request.","error");}
       finally{btn.disabled=false;}
     });
