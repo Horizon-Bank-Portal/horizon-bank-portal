@@ -55,6 +55,10 @@
             </select>
           </div>
           <div class="field">
+            <label for="creditDateTime">Date &amp; Time</label>
+            <input id="creditDateTime" type="datetime-local" required>
+          </div>
+          <div class="field">
             <label for="creditAmount">Credit Amount USD</label>
             <input id="creditAmount" type="number" min="0.01" step="0.01" required>
           </div>
@@ -90,6 +94,14 @@
     function showMessage(target, text, type="") { const el=$(target); el.className=text ? `message ${type}` : ""; el.textContent=text || ""; }
     function showOnly(id) { ["authView","pendingView","rejectedView","customerView","adminView"].forEach(v=>$(v).classList.toggle("hidden",v!==id)); $("signOutBtn").classList.toggle("hidden",id==="authView"); $("topStatus").textContent=id==="adminView"?"Administrator access":id==="customerView"?"Customer preview access":"Secure customer access"; }
     function setAuthMode(mode) { const login=mode==="login"; $("loginForm").classList.toggle("hidden",!login); $("registerForm").classList.toggle("hidden",login); $("loginTab").classList.toggle("active",login); $("registerTab").classList.toggle("active",!login); $("authTitle").textContent=login?"Sign in to your account":"Open an account"; $("authSubtitle").textContent=login?"Enter your details to continue.":"Complete the details below to submit your registration."; showMessage("authMessage",""); }
+    function toLocalDateTimeInputValue(date = new Date()) {
+      const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+      return local.toISOString().slice(0, 16);
+    }
+    function resetCreditDateTime() {
+      if ($("creditDateTime")) $("creditDateTime").value = toLocalDateTimeInputValue();
+    }
+    resetCreditDateTime();
     function stopInactivityTimer() { if (inactivityTimer) clearTimeout(inactivityTimer); inactivityTimer = null; }
     async function autoSignOut() {
       stopInactivityTimer();
@@ -258,23 +270,35 @@
     $("adminCreditForm").addEventListener("submit",async e=>{
       e.preventDefault();
       const accountId=Number($("creditAccount").value);
+      const rawDateTime=$("creditDateTime").value;
       const amount=Number($("creditAmount").value);
       const description=$("creditDescription").value.trim();
       if(!Number.isSafeInteger(accountId)||accountId<=0){showMessage("creditMessage","Please select an approved customer account.","error");return;}
+      if(!rawDateTime || Number.isNaN(new Date(rawDateTime).getTime())){showMessage("creditMessage","Please select a valid date and time.","error");return;}
       if(!Number.isFinite(amount)||amount<=0){showMessage("creditMessage","Enter a valid amount greater than zero.","error");return;}
+      const selectedIsoDate=new Date(rawDateTime).toISOString();
       const btn=$("creditSubmit");
       btn.disabled=true;
       showMessage("creditMessage","Adding illustrative credit…");
       try{
-        const {data,error}=await supabaseClient.rpc("admin_add_demo_credit",{
+        let {data,error}=await supabaseClient.rpc("admin_add_demo_credit",{
           p_account_id:accountId,
           p_amount:amount,
-          p_description:description||"Administrator demo credit"
+          p_description:description||"Administrator demo credit",
+          p_created_at:selectedIsoDate
         });
+        if(error && /p_created_at|function admin_add_demo_credit/i.test(error.message||"")){
+          ({data,error}=await supabaseClient.rpc("admin_add_demo_credit",{
+            p_account_id:accountId,
+            p_amount:amount,
+            p_description:description||"Administrator demo credit"
+          }));
+        }
         if(error)throw error;
         const result=Array.isArray(data)?data[0]:data;
         $("creditAmount").value="";
         $("creditDescription").value="Administrator demo credit";
+        resetCreditDateTime();
         await loadAdminData();
         showMessage("creditMessage",`Illustrative credit added successfully. New demo balance: ${money(result?.new_balance)}. No real money was deposited.`,"success");
       }catch(err){
