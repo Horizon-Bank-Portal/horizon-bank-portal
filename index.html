@@ -15,6 +15,7 @@
     .app-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:26px}.app-head h1{font-size:32px;letter-spacing:-.04em;margin:5px 0}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{padding:21px}.balance-card{background:linear-gradient(135deg,#10233f,#24558f);color:#fff;border:0}.balance-card .muted{color:#cfdae8}.amount{font-size:34px;font-weight:800;letter-spacing:-.04em;margin:12px 0 2px}.metric{font-size:25px;font-weight:800;margin-top:8px}.section{margin-top:20px}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.section-title h2{font-size:17px;margin:0}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:580px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);font-size:13px}th{font-size:10px;color:#8190a3;text-transform:uppercase;letter-spacing:.1em}.pill{display:inline-flex;align-items:center;border-radius:99px;padding:4px 9px;font-size:11px;font-weight:750;background:#edf2f8;color:#53647a}.pill.approved,.pill.completed{background:#eaf6ef;color:var(--green)}.pill.pending{background:#fff5df;color:var(--amber)}.pill.rejected,.pill.failed,.pill.reversed,.pill.declined{background:#fff0f0;color:var(--red)}.pill.successful{background:#eaf6ef;color:var(--green)}.pill.active{background:#eaf6ef;color:var(--green)}.pill.suspended,.pill.deactivated{background:#fff0f0;color:var(--red)}.customer-item{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:14px 0;border-bottom:1px solid var(--line)}.customer-item:last-child{border:0}.customer-name{font-weight:750}.customer-meta{font-size:12px;color:var(--muted)}.empty{padding:24px;text-align:center;color:var(--muted);font-size:13px}.footer{max-width:1180px;margin:0 auto;padding:0 24px 26px;text-align:center;color:#8995a5;font-size:11px}.notice-link{color:#64758c;text-decoration:underline;text-underline-offset:3px}.spinner{display:inline-block;width:15px;height:15px;border:2px solid #ffffff66;border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}@keyframes spin{to{transform:rotate(360deg)}}
     @media(max-width:820px){.auth-layout{grid-template-columns:1fr}.welcome{min-height:350px}.grid{grid-template-columns:1fr}.app-head{align-items:flex-start;flex-direction:column}.topinner{padding:15px 18px}.shell{padding:24px 16px 48px}}
     .amount-credit{color:#18794e;font-weight:800}.amount-debit{color:#b53b42;font-weight:800}.admin-search{width:100%;max-width:440px;border:1px solid #dce3ec;border-radius:10px;padding:12px 13px;background:#fff}.details-backdrop{position:fixed;inset:0;background:rgba(10,22,40,.62);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}.details-panel{background:#fff;border-radius:18px;max-width:850px;width:100%;max-height:88vh;overflow:auto;padding:24px;box-shadow:0 24px 70px #0004}.details-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.detail-cell{background:#f5f7fa;border:1px solid var(--line);border-radius:10px;padding:12px}.detail-cell .muted{font-size:11px}.detail-value{font-weight:750;overflow-wrap:anywhere}@media(max-width:600px){.details-grid{grid-template-columns:1fr}.details-panel{padding:17px}.customer-item{align-items:flex-start;flex-direction:column}}
+    .mode-toggle{display:inline-flex;gap:6px;background:#f0f3f8;border-radius:10px;padding:4px;margin:6px 0 14px}.mode-toggle button{border:0;background:transparent;padding:8px 16px;border-radius:7px;font-weight:750;font-size:13px;color:#66758a}.mode-toggle button.active{background:#fff;color:var(--navy);box-shadow:0 2px 8px #10233f12}.mode-toggle button.debit-active.active{color:var(--red)}
   </style>
 </head>
 <body>
@@ -44,8 +45,12 @@
     <section id="adminView" class="hidden"><div class="app-head"><div><div class="eyebrow">Administration · prototype</div><h1>Administrator overview</h1><div class="muted">Review demo registrations and illustrative customer records.</div></div><div class="toolbar"><button class="secondary" id="adminRefresh" type="button">Refresh records</button></div></div><div class="grid"><div class="card"><div class="muted">Total customers</div><div class="metric" id="adminCustomerCount">—</div></div><div class="card"><div class="muted">Pending registrations</div><div class="metric" id="adminPendingCount">—</div></div><div class="card"><div class="muted">Approved customers</div><div class="metric" id="adminApprovedCount">—</div></div><div class="card"><div class="muted">Pending transaction requests</div><div class="metric" id="adminPendingTransactions">—</div></div></div><div class="card section"><div class="section-title"><h2>Customer registrations</h2><span class="muted small">Review and update status</span></div><input class="admin-search" id="adminCustomerSearch" type="search" placeholder="Search name, email, or account number" aria-label="Search customers"><div id="adminCustomers"><div class="empty">Loading customer profiles…</div></div></div><div class="card section"><div class="section-title"><h2>Account records</h2></div><div class="table-wrap"><table><thead><tr><th>Customer</th><th>Account name</th><th>Account number</th><th>Type</th><th>Illustrative balance</th></tr></thead><tbody id="adminAccounts"><tr><td colspan="5" class="empty">Loading account records…</td></tr></tbody></table></div></div>
       <div class="card section">
         <div class="section-title">
-          <h2>Add illustrative credit</h2>
+          <h2 id="adjustmentHeading">Add illustrative credit</h2>
           <span class="muted small">Administrator only · Demo balances</span>
+        </div>
+        <div class="mode-toggle" role="group" aria-label="Adjustment type">
+          <button id="toggleCreditMode" class="active" type="button">Credit (+)</button>
+          <button id="toggleDebitMode" class="debit-active" type="button">Debit (−)</button>
         </div>
         <form id="adminCreditForm">
           <div class="field">
@@ -59,7 +64,7 @@
             <input id="creditDateTime" type="datetime-local" required>
           </div>
           <div class="field">
-            <label for="creditAmount">Credit Amount USD</label>
+            <label id="creditAmountLabel" for="creditAmount">Credit Amount USD</label>
             <input id="creditAmount" type="number" min="0.01" step="0.01" required>
           </div>
           <div class="field">
@@ -67,7 +72,7 @@
             <input id="creditDescription" type="text" maxlength="200" value="Administrator demo credit" required>
           </div>
           <button class="primary" id="creditSubmit" type="submit">Add illustrative credit</button>
-          <p class="fineprint">This updates demo data only. No real money is deposited or transferred.</p>
+          <p class="fineprint" id="adjustmentFineprint">This updates demo data only. No real money is deposited or transferred.</p>
         </form>
         <div id="creditMessage" aria-live="polite"></div>
       </div>
@@ -84,6 +89,7 @@
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
     let currentProfile = null;
     let currentIsAdmin = false;
+    let adjustmentMode = "credit";
     const INACTIVITY_LIMIT = 3 * 60 * 1000;
     let inactivityTimer = null;
     let lastActivityAt = Date.now();
@@ -100,6 +106,23 @@
     }
     function resetCreditDateTime() {
       if ($("creditDateTime")) $("creditDateTime").value = toLocalDateTimeInputValue();
+    }
+    function setAdjustmentMode(mode) {
+      adjustmentMode = mode === "debit" ? "debit" : "credit";
+      const isDebit = adjustmentMode === "debit";
+      $("toggleCreditMode").classList.toggle("active", !isDebit);
+      $("toggleDebitMode").classList.toggle("active", isDebit);
+      $("adjustmentHeading").textContent = isDebit ? "Add illustrative debit" : "Add illustrative credit";
+      $("creditAmountLabel").textContent = isDebit ? "Debit Amount USD" : "Credit Amount USD";
+      $("creditSubmit").textContent = isDebit ? "Add illustrative debit" : "Add illustrative credit";
+      $("adjustmentFineprint").textContent = isDebit
+        ? "This updates demo data only. Debits are blocked if the customer's balance is insufficient."
+        : "This updates demo data only. No real money is deposited or transferred.";
+      const currentDesc = $("creditDescription").value.trim();
+      if (!currentDesc || currentDesc === "Administrator demo credit" || currentDesc === "Administrator demo debit") {
+        $("creditDescription").value = isDebit ? "Administrator demo debit" : "Administrator demo credit";
+      }
+      showMessage("creditMessage", "");
     }
     resetCreditDateTime();
     function stopInactivityTimer() { if (inactivityTimer) clearTimeout(inactivityTimer); inactivityTimer = null; }
@@ -293,6 +316,8 @@
 
     $("loginTab").addEventListener("click",()=>setAuthMode("login"));
     $("registerTab").addEventListener("click",()=>setAuthMode("register"));
+    $("toggleCreditMode").addEventListener("click",()=>setAdjustmentMode("credit"));
+    $("toggleDebitMode").addEventListener("click",()=>setAdjustmentMode("debit"));
     $("loginForm").addEventListener("submit",async e=>{e.preventDefault();showMessage("authMessage","Signing in…");const email=$("loginEmail").value.trim();const password=$("loginPassword").value;const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){showMessage("authMessage",error.message,"error");return;}try{await routeUser(data.user);}catch(err){showMessage("authMessage",err.message||"Unable to load your account.","error");}});
     $("registerForm").addEventListener("submit",async e=>{e.preventDefault();showMessage("authMessage","Submitting your registration…");const full_name=$("fullName").value.trim();const email=$("regEmail").value.trim();const phone_number=$("phoneNumber").value.trim();const password=$("regPassword").value;if(!full_name||!email||!phone_number||password.length<8){showMessage("authMessage","Please complete every field and use a password of at least 8 characters.","error");return;}const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{full_name,phone_number},emailRedirectTo:window.location.origin+window.location.pathname}});if(error){showMessage("authMessage",error.message,"error");return;}if(data.session){showMessage("authMessage","Registration submitted. Please confirm your email address, then sign in to check your approval status.","success");}else{showMessage("authMessage","Registration submitted. Check your email and click the confirmation link. After confirming, return here and sign in to check your approval status.","success");}$("registerForm").reset();});
     $("signOutBtn").addEventListener("click",signOut);$("pendingSignOut").addEventListener("click",signOut);$("rejectedSignOut").addEventListener("click",signOut);
@@ -318,36 +343,54 @@
       const rawDateTime=$("creditDateTime").value;
       const amount=Number($("creditAmount").value);
       const description=$("creditDescription").value.trim();
+      const isDebit=adjustmentMode==="debit";
+      const defaultDesc=isDebit?"Administrator demo debit":"Administrator demo credit";
+
       if(!Number.isSafeInteger(accountId)||accountId<=0){showMessage("creditMessage","Please select an approved customer account.","error");return;}
       if(!rawDateTime || Number.isNaN(new Date(rawDateTime).getTime())){showMessage("creditMessage","Please select a valid date and time.","error");return;}
       if(!Number.isFinite(amount)||amount<=0){showMessage("creditMessage","Enter a valid amount greater than zero.","error");return;}
+
+      const selectedAccount=adminCustomerAccounts.find(a=>Number(a.id)===accountId);
+      const currentBalance=Number(selectedAccount?.balance ?? 0);
+      if(isDebit && amount>currentBalance){
+        showMessage("creditMessage",`Insufficient balance to debit ${money(amount)}. Available demo balance is ${money(currentBalance)}.`,"error");
+        return;
+      }
+
       const selectedIsoDate=new Date(rawDateTime).toISOString();
       const btn=$("creditSubmit");
       btn.disabled=true;
-      showMessage("creditMessage","Adding illustrative credit…");
+      showMessage("creditMessage",isDebit?"Adding illustrative debit…":"Adding illustrative credit…");
       try{
-        let {data,error}=await supabaseClient.rpc("admin_add_demo_credit",{
+        const rpcName=isDebit?"admin_add_demo_debit":"admin_add_demo_credit";
+        const rpcPattern=isDebit?/p_created_at|function admin_add_demo_debit/i:/p_created_at|function admin_add_demo_credit/i;
+        let {data,error}=await supabaseClient.rpc(rpcName,{
           p_account_id:accountId,
           p_amount:amount,
-          p_description:description||"Administrator demo credit",
+          p_description:description||defaultDesc,
           p_created_at:selectedIsoDate
         });
-        if(error && /p_created_at|function admin_add_demo_credit/i.test(error.message||"")){
-          ({data,error}=await supabaseClient.rpc("admin_add_demo_credit",{
+        if(error && rpcPattern.test(error.message||"")){
+          ({data,error}=await supabaseClient.rpc(rpcName,{
             p_account_id:accountId,
             p_amount:amount,
-            p_description:description||"Administrator demo credit"
+            p_description:description||defaultDesc
           }));
         }
         if(error)throw error;
         const result=Array.isArray(data)?data[0]:data;
         $("creditAmount").value="";
-        $("creditDescription").value="Administrator demo credit";
+        $("creditDescription").value=defaultDesc;
         resetCreditDateTime();
         await loadAdminData();
-        showMessage("creditMessage",`Illustrative credit added successfully. New demo balance: ${money(result?.new_balance)}. No real money was deposited.`,"success");
+        const newBalText=result?.new_balance!==undefined?` New demo balance: ${money(result.new_balance)}.`:"";
+        showMessage("creditMessage",isDebit
+          ?`Illustrative debit added successfully.${newBalText} No real money was transferred.`
+          :`Illustrative credit added successfully.${newBalText} No real money was deposited.`,
+          "success"
+        );
       }catch(err){
-        showMessage("creditMessage",err.message||"Unable to add illustrative credit.","error");
+        showMessage("creditMessage",err.message||(isDebit?"Unable to add illustrative debit.":"Unable to add illustrative credit."),"error");
       }finally{
         btn.disabled=false;
       }
