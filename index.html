@@ -1,486 +1,1319 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#10233f">
-  <title>Horizon Bank | Personal Banking</title>
-  <meta name="description" content="Horizon Bank customer portal preview.">
-  <style>
-    :root{--navy:#10233f;--navy2:#18385f;--blue:#285da8;--gold:#c8a45d;--paper:#f4f6fa;--ink:#17263b;--muted:#718096;--line:#e4e9f0;--white:#fff;--green:#18794e;--red:#b53b42;--amber:#946719;--shadow:0 16px 44px rgba(16,35,63,.09)}
-    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}a{color:inherit}.hidden{display:none!important}
-    .topbar{background:var(--navy);color:#fff;border-bottom:1px solid rgba(255,255,255,.1)}.topinner{max-width:1180px;margin:auto;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.08em}.brandmark{width:180px;height:60px;border:none;border-radius:0;display:flex;align-items:center;justify-content:center;flex-shrink:0}.brandmark img{width:100%;height:100%;object-fit:contain}.brand small{display:block;color:#c7d2e1;font-size:9px;font-weight:600;letter-spacing:.23em;margin-top:1px}.top-actions{display:flex;align-items:center;gap:10px}.top-actions span{font-size:12px;color:#c7d2e1}
-    .shell{max-width:1180px;margin:0 auto;padding:38px 24px 70px}.auth-layout{min-height:calc(100vh - 150px);display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:stretch}.welcome{background:linear-gradient(145deg,#10233f,#1d4777);border-radius:24px;padding:clamp(30px,5vw,58px);color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between}.welcome:after{content:"";position:absolute;width:360px;height:360px;border:1px solid rgba(200,164,93,.24);border-radius:50%;right:-140px;bottom:-150px;box-shadow:0 0 0 35px rgba(255,255,255,.025),0 0 0 75px rgba(255,255,255,.02)}.eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:800}.welcome h1{font-size:clamp(32px,4.5vw,54px);line-height:1.1;letter-spacing:-.04em;max-width:530px;margin:18px 0}.welcome p{color:#d3deeb;max-width:470px}.welcome-foot{font-size:12px;color:#b9c7d8;position:relative;z-index:1}.feature-list{display:grid;gap:13px;margin-top:34px;position:relative;z-index:1}.feature{display:flex;align-items:center;gap:12px;color:#e8eef6;font-size:13px}.feature i{width:25px;height:25px;border:1px solid rgba(200,164,93,.55);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-style:normal}
-    .auth-card,.card{background:var(--white);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}.auth-card{padding:clamp(24px,4vw,42px);align-self:center}.auth-card h2{font-size:26px;margin:5px 0 4px;letter-spacing:-.03em}.muted{color:var(--muted)}.small{font-size:12px}.tabs{display:flex;gap:6px;background:#f0f3f8;border-radius:11px;padding:5px;margin:24px 0}.tabs button{flex:1;border:0;background:transparent;padding:10px;border-radius:8px;color:#66758a;font-weight:700}.tabs button.active{background:#fff;color:var(--navy);box-shadow:0 2px 8px #10233f12}.field{display:grid;gap:6px;margin:14px 0}.field label{font-size:12px;font-weight:750;color:#53647a}.field input,.field select{width:100%;border:1px solid #dce3ec;border-radius:10px;padding:12px 13px;background:#fff;outline:none}.field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #285da81a}.primary,.secondary,.quiet,.danger{border:0;border-radius:10px;padding:11px 16px;font-weight:750}.primary{background:var(--blue);color:#fff}.primary:hover{background:#204d8c}.primary:disabled{opacity:.6;cursor:not-allowed}.secondary{background:#edf2f8;color:var(--navy)}.quiet{background:transparent;color:#dce6f2}.danger{background:#fff0f0;color:var(--red)}.wide{width:100%;margin-top:10px}.message{padding:12px 14px;border-radius:10px;margin:14px 0;font-size:13px;background:#eef4fb;color:#38516f;border:1px solid #dce7f6}.message.error{background:#fff1f1;color:#a23239;border-color:#f4d7d9}.message.success{background:#edf8f1;color:#17633f;border-color:#d2eadb}.fineprint{font-size:11px;color:#8491a3;margin-top:18px}
-    .app-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:26px}.app-head h1{font-size:32px;letter-spacing:-.04em;margin:5px 0}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{padding:21px}.balance-card{background:linear-gradient(135deg,#10233f,#24558f);color:#fff;border:0}.balance-card .muted{color:#cfdae8}.amount{font-size:34px;font-weight:800;letter-spacing:-.04em;margin:12px 0 2px}.metric{font-size:25px;font-weight:800;margin-top:8px}.section{margin-top:20px}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.section-title h2{font-size:17px;margin:0}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:580px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);font-size:13px}th{font-size:10px;color:#8190a3;text-transform:uppercase;letter-spacing:.1em}.pill{display:inline-flex;align-items:center;border-radius:99px;padding:4px 9px;font-size:11px;font-weight:750;background:#edf2f8;color:#53647a}.pill.approved,.pill.completed{background:#eaf6ef;color:var(--green)}.pill.pending{background:#fff5df;color:var(--amber)}.pill.rejected,.pill.failed,.pill.reversed,.pill.declined{background:#fff0f0;color:var(--red)}.pill.successful{background:#eaf6ef;color:var(--green)}.pill.active{background:#eaf6ef;color:var(--green)}.pill.suspended,.pill.deactivated{background:#fff0f0;color:var(--red)}.customer-item{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:14px 0;border-bottom:1px solid var(--line)}.customer-item:last-child{border:0}.customer-name{font-weight:750}.customer-meta{font-size:12px;color:var(--muted)}.empty{padding:24px;text-align:center;color:var(--muted);font-size:13px}.footer{max-width:1180px;margin:0 auto;padding:0 24px 26px;text-align:center;color:#8995a5;font-size:11px}.notice-link{color:#64758c;text-decoration:underline;text-underline-offset:3px}.spinner{display:inline-block;width:15px;height:15px;border:2px solid #ffffff66;border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}@keyframes spin{to{transform:rotate(360deg)}}
-    @media(max-width:820px){.auth-layout{grid-template-columns:1fr}.welcome{min-height:350px}.grid{grid-template-columns:1fr}.app-head{align-items:flex-start;flex-direction:column}.topinner{padding:15px 18px}.shell{padding:24px 16px 48px}}
-    .amount-credit{color:#18794e;font-weight:800}.amount-debit{color:#b53b42;font-weight:800}.admin-search{width:100%;max-width:440px;border:1px solid #dce3ec;border-radius:10px;padding:12px 13px;background:#fff}.details-backdrop{position:fixed;inset:0;background:rgba(10,22,40,.62);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}.details-panel{background:#fff;border-radius:18px;max-width:850px;width:100%;max-height:88vh;overflow:auto;padding:24px;box-shadow:0 24px 70px #0004}.details-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.detail-cell{background:#f5f7fa;border:1px solid var(--line);border-radius:10px;padding:12px}.detail-cell .muted{font-size:11px}.detail-value{font-weight:750;overflow-wrap:anywhere}@media(max-width:600px){.details-grid{grid-template-columns:1fr}.details-panel{padding:17px}.customer-item{align-items:flex-start;flex-direction:column}}
-    @media(max-width:640px){
-      .tx-table{min-width:0}
-      .tx-table thead{display:none}
-      .tx-table,.tx-table tbody,.tx-table tr,.tx-table td{display:block;width:100%}
-      .tx-table tr{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:14px 4px;border-bottom:1px solid var(--line);align-items:center}
-      .tx-table tr:last-child{border-bottom:0}
-      .tx-table td{border:0;padding:0}
-      .tx-table td.empty{grid-column:1 / -1;padding:24px;text-align:center}
-      .tx-table td:nth-child(1){grid-column:1;grid-row:2;font-size:11px;color:var(--muted)}
-      .tx-table td:nth-child(2){grid-column:1;grid-row:1;font-weight:700}
-      .tx-table td:nth-child(3){grid-column:1;grid-row:3;font-size:11px;color:var(--muted)}
-      .tx-table td:nth-child(4){grid-column:2;grid-row:1;text-align:right;font-size:14px}
-      .tx-table td:nth-child(5){grid-column:2;grid-row:2 / span 2;text-align:right}
-    }
-    .mode-toggle{display:inline-flex;gap:6px;background:#f0f3f8;border-radius:10px;padding:4px;margin:6px 0 14px}.mode-toggle button{border:0;background:transparent;padding:8px 16px;border-radius:7px;font-weight:750;font-size:13px;color:#66758a}.mode-toggle button.active{background:#fff;color:var(--navy);box-shadow:0 2px 8px #10233f12}.mode-toggle button.debit-active.active{color:var(--red)}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#10233f">
+<title>Horizon Bank | Personal Banking</title>
+<meta name="description" content="Horizon Bank customer portal preview.">
+<style>
+:root{--navy:#10233f;--navy2:#18385f;--blue:#285da8;--gold:#c8a45d;--paper:#f4f6fa;--ink:#17263b;--muted:#718096;--line:#e4e9f0;--white:#fff;--green:#18794e;--red:#b53b42;--amber:#946719;--shadow:0 16px 44px rgba(16,35,63,.09)}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}a{color:inherit}.hidden{display:none!important}
+.topbar{background:var(--navy);color:#fff;border-bottom:1px solid rgba(255,255,255,.1)}.topinner{max-width:1180px;margin:auto;padding:18px 24px;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.08em}.brandmark{width:180px;height:60px;border:none;border-radius:0;display:flex;align-items:center;justify-content:center;flex-shrink:0}.brandmark img{width:100%;height:100%;object-fit:contain}.brand small{display:block;color:#c7d2e1;font-size:9px;font-weight:600;letter-spacing:.23em;margin-top:1px}.top-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.top-actions span{font-size:12px;color:#c7d2e1}
+.lang-select{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:6px 10px;font-size:12px;font-weight:650;outline:none}.lang-select:focus{border-color:var(--gold)}.lang-select option{background:var(--navy);color:#fff}
+.shell{max-width:1180px;margin:0 auto;padding:38px 24px 70px}.auth-layout{min-height:calc(100vh - 150px);display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:stretch}.welcome{background:linear-gradient(145deg,#10233f,#1d4777);border-radius:24px;padding:clamp(30px,5vw,58px);color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between}.welcome:after{content:"";position:absolute;width:360px;height:360px;border:1px solid rgba(200,164,93,.24);border-radius:50%;right:-140px;bottom:-150px;box-shadow:0 0 0 35px rgba(255,255,255,.025),0 0 0 75px rgba(255,255,255,.02)}.eyebrow{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:800}.welcome h1{font-size:clamp(32px,4.5vw,54px);line-height:1.1;letter-spacing:-.04em;max-width:530px;margin:18px 0}.welcome p{color:#d3deeb;max-width:470px}.welcome-foot{font-size:12px;color:#b9c7d8;position:relative;z-index:1}.feature-list{display:grid;gap:13px;margin-top:34px;position:relative;z-index:1}.feature{display:flex;align-items:center;gap:12px;color:#e8eef6;font-size:13px}.feature i{width:25px;height:25px;border:1px solid rgba(200,164,93,.55);border-radius:50%;display:grid;place-items:center;color:var(--gold);font-style:normal}
+.auth-card,.card{background:var(--white);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}.auth-card{padding:clamp(24px,4vw,42px);align-self:center}.auth-card h2{font-size:26px;margin:5px 0 4px;letter-spacing:-.03em}.muted{color:var(--muted)}.small{font-size:12px}.tabs{display:flex;gap:6px;background:#f0f3f8;border-radius:11px;padding:5px;margin:24px 0}.tabs button{flex:1;border:0;background:transparent;padding:10px;border-radius:8px;color:#66758a;font-weight:700}.tabs button.active{background:#fff;color:var(--navy);box-shadow:0 2px 8px #10233f12}.field{display:grid;gap:6px;margin:14px 0}.field label{font-size:12px;font-weight:750;color:#53647a}.field input,.field select{width:100%;border:1px solid #dce3ec;border-radius:10px;padding:12px 13px;background:#fff;outline:none}.field input:focus,.field select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #285da81a}.primary,.secondary,.quiet,.danger{border:0;border-radius:10px;padding:11px 16px;font-weight:750}.primary{background:var(--blue);color:#fff}.primary:hover{background:#204d8c}.primary:disabled{opacity:.6;cursor:not-allowed}.secondary{background:#edf2f8;color:var(--navy)}.quiet{background:transparent;color:#dce6f2}.danger{background:#fff0f0;color:var(--red)}.wide{width:100%;margin-top:10px}.message{padding:12px 14px;border-radius:10px;margin:14px 0;font-size:13px;background:#eef4fb;color:#38516f;border:1px solid #dce7f6}.message.error{background:#fff1f1;color:#a23239;border-color:#f4d7d9}.message.success{background:#edf8f1;color:#17633f;border-color:#d2eadb}.fineprint{font-size:11px;color:#8491a3;margin-top:18px}
+.app-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:26px}.app-head h1{font-size:32px;letter-spacing:-.04em;margin:5px 0}.toolbar{display:flex;gap:8px;flex-wrap:wrap}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{padding:21px}.balance-card{background:linear-gradient(135deg,#10233f,#24558f);color:#fff;border:0}.balance-card .muted{color:#cfdae8}.amount{font-size:34px;font-weight:800;letter-spacing:-.04em;margin:12px 0 2px}.metric{font-size:25px;font-weight:800;margin-top:8px}.section{margin-top:20px}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.section-title h2{font-size:17px;margin:0}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:580px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);font-size:13px}th{font-size:10px;color:#8190a3;text-transform:uppercase;letter-spacing:.1em}.pill{display:inline-flex;align-items:center;border-radius:99px;padding:4px 9px;font-size:11px;font-weight:750;background:#edf2f8;color:#53647a}.pill.approved,.pill.completed{background:#eaf6ef;color:var(--green)}.pill.pending{background:#fff5df;color:var(--amber)}.pill.rejected,.pill.failed,.pill.reversed,.pill.declined{background:#fff0f0;color:var(--red)}.pill.successful{background:#eaf6ef;color:var(--green)}.pill.active{background:#eaf6ef;color:var(--green)}.pill.suspended,.pill.deactivated{background:#fff0f0;color:var(--red)}.customer-item{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:14px 0;border-bottom:1px solid var(--line)}.customer-item:last-child{border:0}.customer-name{font-weight:750}.customer-meta{font-size:12px;color:var(--muted)}.empty{padding:24px;text-align:center;color:var(--muted);font-size:13px}.footer{max-width:1180px;margin:0 auto;padding:0 24px 26px;text-align:center;color:#8995a5;font-size:11px}.notice-link{color:#64758c;text-decoration:underline;text-underline-offset:3px}.spinner{display:inline-block;width:15px;height:15px;border:2px solid #ffffff66;border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle}@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:820px){.auth-layout{grid-template-columns:1fr}.welcome{min-height:350px}.grid{grid-template-columns:1fr}.app-head{align-items:flex-start;flex-direction:column}.topinner{padding:15px 18px}.shell{padding:24px 16px 48px}}
+.amount-credit{color:#18794e;font-weight:800}.amount-debit{color:#b53b42;font-weight:800}.admin-search{width:100%;max-width:440px;border:1px solid #dce3ec;border-radius:10px;padding:12px 13px;background:#fff}.details-backdrop{position:fixed;inset:0;background:rgba(10,22,40,.62);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}.details-panel{background:#fff;border-radius:18px;max-width:850px;width:100%;max-height:88vh;overflow:auto;padding:24px;box-shadow:0 24px 70px #0004}.details-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.detail-cell{background:#f5f7fa;border:1px solid var(--line);border-radius:10px;padding:12px}.detail-cell .muted{font-size:11px}.detail-value{font-weight:750;overflow-wrap:anywhere}@media(max-width:600px){.details-grid{grid-template-columns:1fr}.details-panel{padding:17px}.customer-item{align-items:flex-start;flex-direction:column}}
+@media(max-width:640px){
+.tx-table{min-width:0}
+.tx-table thead{display:none}
+.tx-table,.tx-table tbody,.tx-table tr,.tx-table td{display:block;width:100%}
+.tx-table tr{display:grid;grid-template-columns:1fr auto;gap:4px 12px;padding:14px 4px;border-bottom:1px solid var(--line);align-items:center}
+.tx-table tr:last-child{border-bottom:0}
+.tx-table td{border:0;padding:0}
+.tx-table td.empty{grid-column:1 / -1;padding:24px;text-align:center}
+.tx-table td:nth-child(1){grid-column:1;grid-row:2;font-size:11px;color:var(--muted)}
+.tx-table td:nth-child(2){grid-column:1;grid-row:1;font-weight:700}
+.tx-table td:nth-child(3){grid-column:1;grid-row:3;font-size:11px;color:var(--muted)}
+.tx-table td:nth-child(4){grid-column:2;grid-row:1;text-align:right;font-size:14px}
+.tx-table td:nth-child(5){grid-column:2;grid-row:2 / span 2;text-align:right}
+}
+.mode-toggle{display:inline-flex;gap:6px;background:#f0f3f8;border-radius:10px;padding:4px;margin:6px 0 14px}.mode-toggle button{border:0;background:transparent;padding:8px 16px;border-radius:7px;font-weight:750;font-size:13px;color:#66758a}.mode-toggle button.active{background:#fff;color:var(--navy);box-shadow:0 2px 8px #10233f12}.mode-toggle button.debit-active.active{color:var(--red)}
+</style>
 </head>
 <body>
-  <header class="topbar"><div class="topinner"><div class="brand"><div class="brandmark"><img src="horizon-bank-logo.png" alt="Horizon Bank" style="width:180px;height:auto;object-fit:contain;"></div><div>HORIZON BANK<small>PERSONAL BANKING.</small></div></div><div class="top-actions"><span id="topStatus">Secure customer access</span><button id="signOutBtn" class="quiet hidden" type="button">Sign out</button></div></div></header>
-  <main class="shell">
-    <section id="authView" class="auth-layout">
-      <div class="welcome"><div><div class="eyebrow">A clearer view of your finances</div><h1>Banking with a more personal perspective.</h1><p>Access your account information through a considered customer experience.</p><div class="feature-list"><div class="feature"><i>✓</i><span>Private customer account access</span></div><div class="feature"><i>✓</i><span>Account activity in one place</span></div><div class="feature"><i>✓</i><span>Administrator-reviewed requests</span></div></div></div><div class="welcome-foot">Horizon Bank · Customer portal preview</div></div>
-      <div class="auth-card"><div class="eyebrow">Welcome to Horizon</div><h2 id="authTitle">Sign in to your account</h2><div class="muted small" id="authSubtitle">Enter your details to continue.</div><div class="tabs"><button id="loginTab" class="active" type="button">Sign in</button><button id="registerTab" type="button">Open an account</button></div>
-        <form id="loginForm"><div class="field"><label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="username" required></div><div class="field"><label for="loginPassword">Password</label><input id="loginPassword" type="password" autocomplete="current-password" required></div><button class="primary wide" type="submit">Sign in securely</button></form>
-        <form id="registerForm" class="hidden"><div class="field"><label for="fullName">Full name</label><input id="fullName" type="text" autocomplete="name" maxlength="100" required></div><div class="field"><label for="regEmail">Email address</label><input id="regEmail" type="email" autocomplete="email" required></div><div class="field"><label for="phoneNumber">Phone number</label><input id="phoneNumber" type="tel" autocomplete="tel" maxlength="30" required></div><div class="field"><label for="regPassword">Create password</label><input id="regPassword" type="password" autocomplete="new-password" minlength="8" required></div><button class="primary wide" type="submit">Submit registration</button><p class="fineprint">This prototype is not a licensed financial institution. Registration is reviewed before demo customer access is enabled.</p></form>
-        <div id="authMessage" aria-live="polite"></div><div class="fineprint">Horizon was recognized among Forbes 2026 World’s Best Banks for our unwavering commitment to our clients, trustworthiness, and quality of financial services.</div>
-      </div>
-    </section>
+<header class="topbar">
+<div class="topinner">
+<div class="brand">
+<div class="brandmark"><img src="horizon-bank-logo.png" alt="Horizon Bank" style="width:180px;height:auto;object-fit:contain;"></div>
+<div>HORIZON BANK<small data-i18n="brand_sub">PERSONAL BANKING.</small></div>
+</div>
+<div class="top-actions">
+<select id="langSelect" class="lang-select" aria-label="Select language">
+<option value="en">English</option>
+<option value="es">Español</option>
+<option value="fr">Français</option>
+<option value="ru">Русский</option>
+<option value="pt">Português</option>
+<option value="th">ไทย</option>
+<option value="uk">Українська</option>
+<option value="pl">Polski</option>
+<option value="ro">Română</option>
+<option value="sk">Slovenčina</option>
+<option value="zh">中文</option>
+<option value="ja">日本語</option>
+</select>
+<span id="topStatus">Secure customer access</span>
+<button id="signOutBtn" class="quiet hidden" type="button" data-i18n="sign_out">Sign out</button>
+</div>
+</div>
+</header>
 
-    <section id="pendingView" class="hidden"><div class="card" style="max-width:720px;margin:50px auto;padding:36px"><div class="eyebrow">Registration status</div><h1 style="margin:8px 0 5px">Your registration is awaiting approval</h1><p class="muted">Thank you for registering with Horizon Bank. Your email has been confirmed, and your registration is awaiting administrator approval. You will be able to access your customer dashboard once your registration is approved.</p><div id="pendingMessage" class="message">Your registration is currently pending review.</div><button id="pendingSignOut" class="secondary" type="button">Sign out</button></div></section>
+<main class="shell">
+<section id="authView" class="auth-layout">
+<div class="welcome">
+<div>
+<div class="eyebrow" data-i18n="welcome_eyebrow">A clearer view of your finances</div>
+<h1 data-i18n="welcome_h1">Banking with a more personal perspective.</h1>
+<p data-i18n="welcome_p">Access your account information through a considered customer experience.</p>
+<div class="feature-list">
+<div class="feature"><i>✓</i><span data-i18n="feat_1">Private customer account access</span></div>
+<div class="feature"><i>✓</i><span data-i18n="feat_2">Account activity in one place</span></div>
+<div class="feature"><i>✓</i><span data-i18n="feat_3">Administrator-reviewed requests</span></div>
+</div>
+</div>
+<div class="welcome-foot" data-i18n="welcome_foot">Horizon Bank · Customer portal preview</div>
+</div>
 
-    <section id="rejectedView" class="hidden"><div class="card" style="max-width:720px;margin:50px auto;padding:36px"><div class="eyebrow">Registration status</div><h1 style="margin:8px 0 5px">We could not approve this registration</h1><p class="muted">Your registration has not been approved. Please contact the prototype administrator for further information.</p><button id="rejectedSignOut" class="secondary" type="button">Sign out</button></div></section>
+<div class="auth-card">
+<div class="eyebrow" data-i18n="auth_eyebrow">Welcome to Horizon</div>
+<h2 id="authTitle">Sign in to your account</h2>
+<div class="muted small" id="authSubtitle">Enter your details to continue.</div>
+<div class="tabs">
+<button id="loginTab" class="active" type="button" data-i18n="tab_login">Sign in</button>
+<button id="registerTab" type="button" data-i18n="tab_register">Open an account</button>
+</div>
 
-    <section id="customerView" class="hidden"><div class="app-head"><div><div class="eyebrow">Customer internet banking.</div><h1 id="customerGreeting">Welcome</h1><div class="muted">Here is your account overview.</div></div><div class="toolbar"><button class="secondary" id="customerRefresh" type="button">Refresh information</button></div></div><div class="grid"><div class="card balance-card"><div class="muted">Account balance</div><div class="amount" id="customerBalance">—</div><div class="muted" id="accountLabel">Account information</div></div><div class="card"><div class="muted">Account type</div><div class="metric" id="accountType">—</div><div class="muted small">Account record</div></div><div class="card"><div class="muted">Account status</div><div class="metric" id="customerStatus">Approved</div><div class="muted small">Profile verification</div></div></div>
-      <div class="card section"><div class="section-title"><h2>Transfer request</h2><span class="muted small">Personal Banking That Still Feels Personal</span></div><form id="transferForm">
-        <div class="field"><label for="transferAccountName">Account Name</label><input id="transferAccountName" type="text" maxlength="120" autocomplete="off" required></div>
-        <div class="field"><label for="transferAccountNumber">Account Number</label><input id="transferAccountNumber" type="text" maxlength="80" autocomplete="off" required></div>
-        <div class="field"><label for="transferAmount">Amount USD</label><input id="transferAmount" type="number" min="0.01" step="0.01" required></div>
-        <button class="primary" id="transferSubmit" type="submit">Submit request</button><p class="fineprint">Send and receive money directly from your bank account Fast delivery, with money typically available in minutes, Available through Horizon Bank Internet  Banking and Mobile Banking, Use a U.S. mobile number or email address to get started.</p></form><div id="transferMessage" aria-live="polite"></div></div>
-      <div class="card section"><div class="section-title"><h2>Recent account activity</h2><span class="muted small">Records</span></div><div class="table-wrap"><table class="tx-table"><thead><tr><th>Date &amp; time</th><th>Description / recipient</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead><tbody id="customerTransactions"><tr><td colspan="5" class="empty">Loading account activity…</td></tr></tbody></table></div></div><div id="customerMessage" aria-live="polite"></div></section>
+<form id="loginForm">
+<div class="field"><label for="loginEmail" data-i18n="lbl_email">Email address</label><input id="loginEmail" type="email" autocomplete="username" required></div>
+<div class="field"><label for="loginPassword" data-i18n="lbl_password">Password</label><input id="loginPassword" type="password" autocomplete="current-password" required></div>
+<button class="primary wide" type="submit" data-i18n="btn_login">Sign in securely</button>
+</form>
 
-    <section id="adminView" class="hidden"><div class="app-head"><div><div class="eyebrow">Administration · prototype</div><h1>Administrator overview</h1><div class="muted">Review demo registrations and illustrative customer records.</div></div><div class="toolbar"><button class="secondary" id="adminRefresh" type="button">Refresh records</button></div></div><div class="grid"><div class="card"><div class="muted">Total customers</div><div class="metric" id="adminCustomerCount">—</div></div><div class="card"><div class="muted">Pending registrations</div><div class="metric" id="adminPendingCount">—</div></div><div class="card"><div class="muted">Approved customers</div><div class="metric" id="adminApprovedCount">—</div></div><div class="card"><div class="muted">Pending transaction requests</div><div class="metric" id="adminPendingTransactions">—</div></div></div><div class="card section"><div class="section-title"><h2>Customer registrations</h2><span class="muted small">Review and update status</span></div><input class="admin-search" id="adminCustomerSearch" type="search" placeholder="Search name, email, or account number" aria-label="Search customers"><div id="adminCustomers"><div class="empty">Loading customer profiles…</div></div></div><div class="card section"><div class="section-title"><h2>Account records</h2></div><div class="table-wrap"><table><thead><tr><th>Customer</th><th>Account name</th><th>Account number</th><th>Type</th><th>Illustrative balance</th></tr></thead><tbody id="adminAccounts"><tr><td colspan="5" class="empty">Loading account records…</td></tr></tbody></table></div></div>
-      <div class="card section">
-        <div class="section-title">
-          <h2 id="adjustmentHeading">Add illustrative credit</h2>
-          <span class="muted small">Administrator only · Demo balances</span>
-        </div>
-        <div class="mode-toggle" role="group" aria-label="Adjustment type">
-          <button id="toggleCreditMode" class="active" type="button">Credit (+)</button>
-          <button id="toggleDebitMode" class="debit-active" type="button">Debit (−)</button>
-        </div>
-        <form id="adminCreditForm">
-          <div class="field">
-            <label for="creditAccount">Select customer account</label>
-            <select id="creditAccount" required>
-              <option value="">Choose an approved customer account</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="creditDateTime">Date &amp; Time</label>
-            <input id="creditDateTime" type="datetime-local" required>
-          </div>
-          <div class="field">
-            <label id="creditAmountLabel" for="creditAmount">Credit Amount USD</label>
-            <input id="creditAmount" type="number" min="0.01" step="0.01" required>
-          </div>
-          <div class="field">
-            <label for="creditDescription">Description</label>
-            <input id="creditDescription" type="text" maxlength="200" value="Administrator demo credit" required>
-          </div>
-          <button class="primary" id="creditSubmit" type="submit">Add illustrative credit</button>
-          <p class="fineprint" id="adjustmentFineprint">This updates demo data only. No real money is deposited or transferred.</p>
-        </form>
-        <div id="creditMessage" aria-live="polite"></div>
-      </div>
-      <div class="card section"><div class="section-title"><h2>Recent illustrative transactions</h2></div><div class="table-wrap"><table><thead><tr><th>Date &amp; time</th><th>Customer ID</th><th>Description</th><th>Recipient account name</th><th>Recipient account number</th><th>Type</th><th>Amount</th><th>Status</th><th>Review</th></tr></thead><tbody id="adminTransactions"><tr><td colspan="9" class="empty">Loading transactions…</td></tr></tbody></table></div></div><div id="adminMessage" aria-live="polite"></div></section>
-    <div id="customerDetailsModal" class="details-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="customerDetailsTitle"><div class="details-panel"><div class="section-title"><div><div class="eyebrow">Customer record · prototype</div><h2 id="customerDetailsTitle">Customer details</h2></div><button class="secondary" id="closeCustomerDetails" type="button">Close</button></div><div id="customerDetailsContent"><div class="empty">Loading customer details…</div></div></div></div>
-  </main>
-  <footer class="footer">Advanced security features and 24/7 monitoring to protect your accounts and personal information..</footer>
+<form id="registerForm" class="hidden">
+<div class="field"><label for="fullName" data-i18n="lbl_fullname">Full name</label><input id="fullName" type="text" autocomplete="name" maxlength="100" required></div>
+<div class="field"><label for="regEmail" data-i18n="lbl_email">Email address</label><input id="regEmail" type="email" autocomplete="email" required></div>
+<div class="field"><label for="phoneNumber" data-i18n="lbl_phone">Phone number</label><input id="phoneNumber" type="tel" autocomplete="tel" maxlength="30" required></div>
+<div class="field"><label for="regPassword" data-i18n="lbl_create_password">Create password</label><input id="regPassword" type="password" autocomplete="new-password" minlength="8" required></div>
+<button class="primary wide" type="submit" data-i18n="btn_register">Submit registration</button>
+<p class="fineprint" data-i18n="reg_disclaimer">This prototype is not a licensed financial institution. Registration is reviewed before demo customer access is enabled.</p>
+</form>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>
-    // Browser code must use only the Supabase publishable/anon key, never a service-role secret.
-    const supabaseUrl = "https://zmhovqgwetqqmfekngmc.supabase.co";
-    const supabaseKey = "sb_publishable_D4cj8-15E_h-O0PVqCHNAQ_ahnXqe4B";
-    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-    let currentProfile = null;
-    let currentIsAdmin = false;
-    let adjustmentMode = "credit";
-    const INACTIVITY_LIMIT = 3 * 60 * 1000;
-    let inactivityTimer = null;
-    let lastActivityAt = Date.now();
+<div id="authMessage" aria-live="polite"></div>
+<div class="fineprint" data-i18n="forbes_note">Horizon was recognized among Forbes 2026 World’s Best Banks for our unwavering commitment to our clients, trustworthiness, and quality of financial services.</div>
+</div>
+</section>
 
-    const $ = (id) => document.getElementById(id);
-    const money = (value) => new Intl.NumberFormat("en-US", {style:"currency", currency:"USD"}).format(Number(value || 0));
-    const safe = (value) => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-    const formatTxLabel = (value, status = "") => {
-      const raw = String(value ?? "").trim();
-      if (/^illustrative transfer request$/i.test(raw)) return "Transfer request";
-      if (/^reversal of illustrative( demo)? transfer$/i.test(raw)) return "Reversal";
-      if (!raw && String(status).toLowerCase() === "reversed") return "Reversal";
-      return raw || "Account activity";
-    };
-    function showMessage(target, text, type="") { const el=$(target); el.className=text ? `message ${type}` : ""; el.textContent=text || ""; }
-    function showOnly(id) { ["authView","pendingView","rejectedView","customerView","adminView"].forEach(v=>$(v).classList.toggle("hidden",v!==id)); $("signOutBtn").classList.toggle("hidden",id==="authView"); $("topStatus").textContent=id==="adminView"?"Administrator access":id==="customerView"?"Customer preview access":"Secure customer access"; }
-    function setAuthMode(mode) { const login=mode==="login"; $("loginForm").classList.toggle("hidden",!login); $("registerForm").classList.toggle("hidden",login); $("loginTab").classList.toggle("active",login); $("registerTab").classList.toggle("active",!login); $("authTitle").textContent=login?"Sign in to your account":"Open an account"; $("authSubtitle").textContent=login?"Enter your details to continue.":"Complete the details below to submit your registration."; showMessage("authMessage",""); }
-    function toLocalDateTimeInputValue(date = new Date()) {
-      const local = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-      return local.toISOString().slice(0, 16);
-    }
-    function resetCreditDateTime() {
-      if ($("creditDateTime")) $("creditDateTime").value = toLocalDateTimeInputValue();
-    }
-    function setAdjustmentMode(mode) {
-      adjustmentMode = mode === "debit" ? "debit" : "credit";
-      const isDebit = adjustmentMode === "debit";
-      $("toggleCreditMode").classList.toggle("active", !isDebit);
-      $("toggleDebitMode").classList.toggle("active", isDebit);
-      $("adjustmentHeading").textContent = isDebit ? "Add illustrative debit" : "Add illustrative credit";
-      $("creditAmountLabel").textContent = isDebit ? "Debit Amount USD" : "Credit Amount USD";
-      $("creditSubmit").textContent = isDebit ? "Add illustrative debit" : "Add illustrative credit";
-      $("adjustmentFineprint").textContent = isDebit
-        ? "This updates demo data only. Debits are blocked if the customer's balance is insufficient."
-        : "This updates demo data only. No real money is deposited or transferred.";
-      const currentDesc = $("creditDescription").value.trim();
-      if (!currentDesc || currentDesc === "Administrator demo credit" || currentDesc === "Administrator demo debit") {
-        $("creditDescription").value = isDebit ? "Administrator demo debit" : "Administrator demo credit";
-      }
-      showMessage("creditMessage", "");
-    }
-    resetCreditDateTime();
-    function stopInactivityTimer() { if (inactivityTimer) clearTimeout(inactivityTimer); inactivityTimer = null; }
-    async function autoSignOut() {
-      stopInactivityTimer();
-      await supabaseClient.auth.signOut({ scope: "local" });
-      currentProfile = null; currentIsAdmin = false; showOnly("authView"); setAuthMode("login");
-      showMessage("authMessage", "You were signed out after 3 minutes of inactivity.", "error");
-    }
-    function startInactivityTimer() { stopInactivityTimer(); lastActivityAt = Date.now(); inactivityTimer = setTimeout(() => { autoSignOut().catch(() => {}); }, INACTIVITY_LIMIT); }
-    function resetInactivityTimer() { if (currentProfile || currentIsAdmin) startInactivityTimer(); }
-    ["pointerdown", "keydown", "touchstart", "scroll"].forEach(eventName => { document.addEventListener(eventName, () => { if (currentProfile || currentIsAdmin) resetInactivityTimer(); }, { passive: true }); });
-    document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && (currentProfile || currentIsAdmin)) { if (Date.now() - lastActivityAt >= INACTIVITY_LIMIT) autoSignOut().catch(() => {}); else resetInactivityTimer(); } });
-    async function signOut() { stopInactivityTimer(); await supabaseClient.auth.signOut(); currentProfile=null;currentIsAdmin=false;showOnly("authView");setAuthMode("login"); }
-    async function denyDeletedCustomerAccess(reason = "This customer account has been deleted and can no longer sign in.") {
-      stopInactivityTimer();
-      currentProfile = null;
-      currentIsAdmin = false;
-      await supabaseClient.auth.signOut();
-      showOnly("authView");
-      setAuthMode("login");
-      showMessage("authMessage", reason, "error");
-    }
-    async function loadProfile(user) {
-      const {data,error}=await supabaseClient.from("profiles").select("id,full_name,email,phone_number,approval_status,account_status").eq("id",user.id).maybeSingle();
-      if(error) throw error; currentProfile=data; return data;
-    }
-    async function routeUser(user) {
-      showOnly("authView");
-      const {data:adminFlag,error:adminError}=await supabaseClient.rpc("is_admin");
-      if(!adminError && adminFlag===true) { currentIsAdmin=true; await loadAdminData(); showOnly("adminView"); startInactivityTimer(); return; }
-      currentIsAdmin=false;
-      let profile = null;
-      try {
-        profile = await loadProfile(user);
-      } catch (err) {
-        await denyDeletedCustomerAccess("This customer account has been deleted and can no longer sign in.");
-        return;
-      }
-      if(!profile) {
-        await denyDeletedCustomerAccess("This customer account has been deleted and can no longer sign in.");
-        return;
-      }
-      if(profile.account_status==="suspended" || profile.account_status==="deactivated" || profile.account_status==="deleted") {
-        await denyDeletedCustomerAccess(`Customer access is ${profile.account_status}. Please contact the prototype administrator.`);
-        return;
-      }
-      if(profile.approval_status==="pending") { showOnly("pendingView"); return; }
-      if(profile.approval_status==="rejected") { showOnly("rejectedView"); return; }
-      if(profile.approval_status!=="approved") { showMessage("authMessage","Your profile status could not be verified. Please contact the prototype administrator.","error"); return; }
-      await loadCustomerData(user); showOnly("customerView"); startInactivityTimer();
-    }
-    async function loadCustomerData(user) {
-      if(!currentProfile) await loadProfile(user);
-      $("customerGreeting").textContent=`Welcome, ${currentProfile.full_name || "Customer"}`;
-      const {data:accounts,error:accountError}=await supabaseClient.from("accounts").select("id,account_name,account_number,balance,account_type").eq("user_id",user.id).order("created_at",{ascending:false});
-      if(accountError) throw accountError;
-      const account=accounts?.[0];
-      $("customerBalance").textContent=account?money(account.balance):"—";
-      $("accountLabel").textContent=account?`${account.account_name || "Demo account"} · •••• ${String(account.account_number || "").slice(-4)}`:"No demo account has been assigned yet";
-      $("accountType").textContent=account?.account_type || "Pending setup";
-      $("customerStatus").textContent="Approved";
-      const {data:tx,error:txError}=await supabaseClient.from("transactions").select("id,created_at,transaction_type,amount,description,status,reference,recipient_account_name,recipient_account_number").eq("user_id",user.id).order("created_at",{ascending:false}).order("id",{ascending:false}).limit(20);
-      if(txError) throw txError;
-      $("customerTransactions").innerHTML=tx?.length?tx.map(t=>{
-        const recipientInfo=t.recipient_account_name||t.recipient_account_number?`<div class="customer-meta">${safe(t.recipient_account_name||"")} ${t.recipient_account_number?`· ${safe(t.recipient_account_number)}`:""}</div>`:"";
-        const type=String(t.transaction_type || "").toLowerCase(); const amountPrefix=type==="credit"?"+":type==="debit"?"−":""; const amountClass=type==="credit"?"amount-credit":type==="debit"?"amount-debit":""; return `<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleString():"—")}</td><td>${safe(formatTxLabel(t.description || t.reference, t.status))}${recipientInfo}</td><td>${safe(t.transaction_type || "—")}</td><td class="${amountClass}">${amountPrefix}${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status || "Processing")}</span></td></tr>`;
-      }).join(""):'<tr><td colspan="5" class="empty">No illustrative account activity is available yet.</td></tr>';
-    }
-    let adminCustomerProfiles = [];
-    let adminCustomerAccounts = [];
-    function renderAdminCustomers() {
-      const query=String($("adminCustomerSearch").value||"").trim().toLowerCase();
-      const matches=adminCustomerProfiles.filter(p=>{
-        const account=adminCustomerAccounts.find(a=>a.user_id===p.id);
-        return [p.full_name,p.email,p.phone_number,account?.account_number].some(v=>String(v||"").toLowerCase().includes(query));
-      });
-      $("adminCustomers").innerHTML=matches.length?matches.map(p=>{
-        const accessStatus=p.account_status||"active";
-        const customerAccount=adminCustomerAccounts.find(a=>a.user_id===p.id);
-        const accountNumber=customerAccount?.account_number || "Not assigned";
-        return `<div class="customer-item"><div><div class="customer-name">${safe(p.full_name)}</div><div class="customer-meta">${safe(p.email)} · ${safe(p.phone_number)}</div><div class="customer-meta">Account number: <strong>${safe(accountNumber)}</strong></div><div class="customer-meta">Registered ${safe(p.created_at?new Date(p.created_at).toLocaleDateString():"—")} · Approval: <span class="pill ${safe(p.approval_status)}">${safe(p.approval_status)}</span> · Access: <span class="pill ${safe(accessStatus)}">${safe(accessStatus)}</span></div></div><div class="toolbar"><button class="secondary" type="button" data-customer-details="${safe(p.id)}">View details</button>${p.approval_status!=="approved"?`<button class="primary" type="button" data-profile="${safe(p.id)}" data-status="approved">Approve</button>`:""}${p.approval_status!=="rejected"?`<button class="danger" type="button" data-profile="${safe(p.id)}" data-status="rejected">Reject</button>`:""}${accessStatus!=="suspended"?`<button class="secondary" type="button" data-access-profile="${safe(p.id)}" data-access-status="suspended">Suspend</button>`:""}${accessStatus!=="deactivated"?`<button class="danger" type="button" data-access-profile="${safe(p.id)}" data-access-status="deactivated">Deactivate</button>`:""}${accessStatus!=="active"?`<button class="primary" type="button" data-access-profile="${safe(p.id)}" data-access-status="active">Reactivate</button>`:""}<button class="danger" type="button" data-delete-customer="${safe(p.id)}" data-customer-name="${safe(p.full_name||p.email||"this customer")}">Delete account</button></div></div>`;
-      }).join(""):'<div class="empty">No matching customer records found.</div>';
-    }
-    async function deleteAdminCustomer(userId, customerLabel = "this customer") {
-      if(!confirm(`Are you sure you want to permanently delete ${customerLabel}'s account and immediately block their login access? This will remove their profile, account record, and transaction history.`)) return false;
-      const {error}=await supabaseClient.rpc("admin_delete_demo_customer",{
-        p_user_id:userId
-      });
-      if(error) throw error;
-      $("customerDetailsModal").classList.add("hidden");
-      await loadAdminData();
-      showMessage("adminMessage","Customer account deleted and login access blocked.","success");
-      return true;
-    }
-    async function showCustomerDetails(userId) {
-      const p=adminCustomerProfiles.find(x=>x.id===userId);
-      if(!p) return;
-      const account=adminCustomerAccounts.find(a=>a.user_id===userId);
-      $("customerDetailsTitle").textContent=p.full_name||"Customer details";
-      $("customerDetailsContent").innerHTML='<div class="empty">Loading customer details…</div>';
-      $("customerDetailsModal").classList.remove("hidden");
-      try {
-        const {data:history,error}=await supabaseClient.from("transactions").select("id,created_at,transaction_type,amount,description,status,reference").eq("user_id",userId).order("created_at",{ascending:false}).order("id",{ascending:false}).limit(50);
-        if(error) throw error;
-        const cells=[
-          ["Full name",p.full_name||"—"],["Email",p.email||"—"],["Phone",p.phone_number||"—"],
-          ["Account number",account?.account_number||"Not assigned"],["Account type",account?.account_type||"—"],
-          ["Illustrative balance",account?money(account.balance):"—"],["Registration approval",p.approval_status||"—"],
-          ["Account access",p.account_status||"active"],["Registered",p.created_at?new Date(p.created_at).toLocaleString():"—"]
-        ];
-        const summary=`<div class="details-grid">${cells.map(([label,value])=>`<div class="detail-cell"><div class="muted">${safe(label)}</div><div class="detail-value">${safe(value)}</div></div>`).join("")}</div>`;
-        const rows=history?.length?history.map(t=>`<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleString():"—")}</td><td>${safe(formatTxLabel(t.description||t.reference, t.status))}</td><td>${safe(t.transaction_type||"—")}</td><td>${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status||"—")}</span></td><td>${currentIsAdmin?`<button class="danger" type="button" data-delete-tx="${safe(t.id)}" data-detail-user="${safe(userId)}">Delete</button>`:""}</td></tr>`).join(""):'<tr><td colspan="6" class="empty">No illustrative transaction history found.</td></tr>';
-        const dangerZone=currentIsAdmin?`<div class="section" style="padding-top:12px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div><strong>Delete customer account</strong><div class="muted small">Removes profile, account record, and transactions and immediately denies login.</div></div><button class="danger" type="button" data-delete-customer="${safe(userId)}" data-customer-name="${safe(p.full_name||p.email||"this customer")}">Delete account</button></div>`:"";
-        $("customerDetailsContent").innerHTML=summary+`<div class="section"><h3>Illustrative transaction history</h3><div class="table-wrap"><table><thead><tr><th>Date &amp; time</th><th>Description</th><th>Type</th><th>Amount</th><th>Status</th>${currentIsAdmin?"<th>Action</th>":""}</tr></thead><tbody>${rows}</tbody></table></div><p class="fineprint">All balances and transactions shown here are illustrative demo data only. No real money is held, deposited, or transferred.</p></div>`+dangerZone;
-      } catch(err) {
-        $("customerDetailsContent").innerHTML=`<div class="message error">${safe(err.message||"Unable to load transaction history.")}</div>`;
-      }
-    }
-    async function deleteAdminTransaction(transactionId) {
-      if(!confirm("Are you sure you want to permanently delete this illustrative transaction record?")) return false;
-      const {error}=await supabaseClient.rpc("admin_delete_demo_transaction",{
-        p_transaction_id:Number(transactionId)
-      });
-      if(error) throw error;
-      await loadAdminData();
-      showMessage("adminMessage","Illustrative transaction record deleted.","success");
-      return true;
-    }
-    async function loadAdminData() {
-      const [{data:profiles,error:pErr},{data:accounts,error:aErr},{data:tx,error:tErr},{count:pendingTransactionCount,error:ptErr}]=await Promise.all([
-        supabaseClient.from("profiles").select("id,full_name,email,phone_number,approval_status,account_status,created_at").order("created_at",{ascending:false}),
-        supabaseClient.from("accounts").select("id,user_id,account_name,account_number,account_type,balance,approval_status").order("created_at",{ascending:false}),
-        supabaseClient.from("transactions").select("id,user_id,created_at,transaction_type,amount,description,status,recipient_account_name,recipient_account_number").order("created_at",{ascending:false}).order("id",{ascending:false}).limit(30),
-        supabaseClient.from("transactions").select("id",{count:"exact",head:true}).eq("status","Pending")
-      ]);
-      if(pErr) throw pErr;if(aErr) throw aErr;if(tErr) throw tErr;if(ptErr) throw ptErr;
-      const {data:{user:adminUser},error:userError}=await supabaseClient.auth.getUser();
-      if(userError) throw userError;
-      const list=(profiles||[]).filter(p=>p.id!==adminUser?.id);
-      adminCustomerProfiles=list;adminCustomerAccounts=accounts||[];
-      const pending=list.filter(p=>p.approval_status==="pending").length;
-      const approved=list.filter(p=>p.approval_status==="approved").length;
-      $("adminCustomerCount").textContent=list.length;$("adminPendingCount").textContent=pending;$("adminApprovedCount").textContent=approved;$("adminPendingTransactions").textContent=pendingTransactionCount||0;
-      renderAdminCustomers();
-      $("adminAccounts").innerHTML=accounts?.length?accounts.map(a=>{const p=list.find(x=>x.id===a.user_id);return `<tr><td>${safe(p?.full_name||a.user_id)}</td><td>${safe(a.account_name)}</td><td>${safe(a.account_number)}</td><td>${safe(a.account_type)}</td><td>${money(a.balance)}</td></tr>`}).join(""):'<tr><td colspan="5" class="empty">No Account record found.</td></tr>';
+<section id="pendingView" class="hidden">
+<div class="card" style="max-width:720px;margin:50px auto;padding:36px">
+<div class="eyebrow" data-i18n="status_eyebrow">Registration status</div>
+<h1 style="margin:8px 0 5px" data-i18n="pending_h1">Your registration is awaiting approval</h1>
+<p class="muted" data-i18n="pending_p">Thank you for registering with Horizon Bank. Your email has been confirmed, and your registration is awaiting administrator approval. You will be able to access your customer dashboard once your registration is approved.</p>
+<div id="pendingMessage" class="message" data-i18n="pending_msg">Your registration is currently pending review.</div>
+<button id="pendingSignOut" class="secondary" type="button" data-i18n="sign_out">Sign out</button>
+</div>
+</section>
 
-      const eligibleAccounts=(accounts||[]).filter(a=>{
-        const p=(profiles||[]).find(x=>x.id===a.user_id);
-        return p && p.id!==adminUser?.id && p.approval_status==="approved" &&
-          (p.account_status||"active")==="active" &&
-          String(a.approval_status||"approved").toLowerCase()==="approved";
-      });
-      $("creditAccount").innerHTML='<option value="">Choose an approved customer account</option>'+
-        eligibleAccounts.map(a=>{
-          const p=(profiles||[]).find(x=>x.id===a.user_id);
-          return `<option value="${safe(a.id)}">${safe(p?.full_name||"Customer")} · ${safe(a.account_number||"Account")} · ${money(a.balance)}</option>`;
-        }).join("");
-      if(!eligibleAccounts.length){
-        $("creditAccount").innerHTML='<option value="">No approved active customer accounts available</option>';
-      }
+<section id="rejectedView" class="hidden">
+<div class="card" style="max-width:720px;margin:50px auto;padding:36px">
+<div class="eyebrow" data-i18n="status_eyebrow">Registration status</div>
+<h1 style="margin:8px 0 5px" data-i18n="rejected_h1">We could not approve this registration</h1>
+<p class="muted" data-i18n="rejected_p">Your registration has not been approved. Please contact the prototype administrator for further information.</p>
+<button id="rejectedSignOut" class="secondary" type="button" data-i18n="sign_out">Sign out</button>
+</div>
+</section>
 
-      $("adminTransactions").innerHTML=tx?.length?tx.map(t=>{
-         const isTransfer=t.transaction_type==="Debit"&&["Transfer request","Illustrative transfer request"].includes(t.description);
-        const reviewBtns=isTransfer&&t.status==="Pending"?`<button class="primary" type="button" data-review="${safe(t.id)}" data-new-status="Successful">Approve demo</button> <button class="danger" type="button" data-review="${safe(t.id)}" data-new-status="Declined">Decline</button>`:isTransfer&&t.status==="Successful"?`<button class="danger" type="button" data-review="${safe(t.id)}" data-new-status="Reversed">Reverse demo</button>`:"";
-        const deleteBtn=`<button class="danger" type="button" data-delete-tx="${safe(t.id)}">Delete</button>`;
-        const action=`<div class="toolbar">${reviewBtns}${deleteBtn}</div>`;
-        const type=String(t.transaction_type||"").toLowerCase();
-        const prefix=type==="credit"?"+":type==="debit"?"−":"";
-        const amountClass=type==="credit"?"amount-credit":type==="debit"?"amount-debit":"";
-        return `<tr><td>${safe(t.created_at?new Date(t.created_at).toLocaleString():"—")}</td><td>${safe(t.user_id)}</td><td>${safe(formatTxLabel(t.description, t.status))}</td><td>${safe(t.recipient_account_name||"—")}</td><td>${safe(t.recipient_account_number||"—")}</td><td>${safe(t.transaction_type||"—")}</td><td class="${amountClass}">${prefix}${money(t.amount)}</td><td><span class="pill ${safe(String(t.status||"").toLowerCase())}">${safe(t.status||"—")}</span></td><td>${action}</td></tr>`;
-      }).join(""):'<tr><td colspan="9" class="empty">No illustrative transactions found.</td></tr>';
-    }
-    async function updateApproval(userId,status) {
-      const {error}=await supabaseClient.from("profiles").update({approval_status:status}).eq("id",userId);
-      if(error) throw error; showMessage("adminMessage",`Customer registration ${status}.`,"success"); await loadAdminData();
-    }
+<section id="customerView" class="hidden">
+<div class="app-head">
+<div>
+<div class="eyebrow" data-i18n="cust_eyebrow">Customer internet banking.</div>
+<h1 id="customerGreeting">Welcome</h1>
+<div class="muted" data-i18n="cust_sub">Here is your account overview.</div>
+</div>
+<div class="toolbar"><button class="secondary" id="customerRefresh" type="button" data-i18n="btn_refresh_info">Refresh information</button></div>
+</div>
 
-    async function updateCustomerAccess(userId,status) {
-      const actionLabel=status==="active"?"reactivate":status==="suspended"?"suspend":"deactivate";
-      if(!confirm(`Are you sure you want to ${actionLabel} this customer's prototype access?`)) return;
-      showMessage("adminMessage",`Updating customer access: ${status}…`);
-      const {data,error}=await supabaseClient.functions.invoke("manage-customer-access",{
-        body:{user_id:userId,status}
-      });
-      if(error) throw error;
-      if(data?.error) throw new Error(data.error);
-      showMessage("adminMessage",`Customer access ${status}.`,"success");
-      await loadAdminData();
-    }
+<div class="grid">
+<div class="card balance-card"><div class="muted" data-i18n="lbl_balance">Account balance</div><div class="amount" id="customerBalance">—</div><div class="muted" id="accountLabel">Account information</div></div>
+<div class="card"><div class="muted" data-i18n="lbl_acc_type">Account type</div><div class="metric" id="accountType">—</div><div class="muted small" data-i18n="lbl_acc_record">Account record</div></div>
+<div class="card"><div class="muted" data-i18n="lbl_acc_status">Account status</div><div class="metric" id="customerStatus">Approved</div><div class="muted small" data-i18n="lbl_profile_ver">Profile verification</div></div>
+</div>
 
-    $("loginTab").addEventListener("click",()=>setAuthMode("login"));
-    $("registerTab").addEventListener("click",()=>setAuthMode("register"));
-    $("toggleCreditMode").addEventListener("click",()=>setAdjustmentMode("credit"));
-    $("toggleDebitMode").addEventListener("click",()=>setAdjustmentMode("debit"));
-    $("loginForm").addEventListener("submit",async e=>{e.preventDefault();showMessage("authMessage","Signing in…");const email=$("loginEmail").value.trim();const password=$("loginPassword").value;const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){showMessage("authMessage",error.message,"error");return;}try{await routeUser(data.user);}catch(err){showMessage("authMessage",err.message||"Unable to load your account.","error");}});
-    $("registerForm").addEventListener("submit",async e=>{e.preventDefault();showMessage("authMessage","Submitting your registration…");const full_name=$("fullName").value.trim();const email=$("regEmail").value.trim();const phone_number=$("phoneNumber").value.trim();const password=$("regPassword").value;if(!full_name||!email||!phone_number||password.length<8){showMessage("authMessage","Please complete every field and use a password of at least 8 characters.","error");return;}const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{full_name,phone_number},emailRedirectTo:window.location.origin+window.location.pathname}});if(error){showMessage("authMessage",error.message,"error");return;}if(data.session){showMessage("authMessage","Registration submitted. Please confirm your email address, then sign in to check your approval status.","success");}else{showMessage("authMessage","Registration submitted. Check your email and click the confirmation link. After confirming, return here and sign in to check your approval status.","success");}$("registerForm").reset();});
-    $("signOutBtn").addEventListener("click",signOut);$("pendingSignOut").addEventListener("click",signOut);$("rejectedSignOut").addEventListener("click",signOut);
-    $("transferForm").addEventListener("submit",async e=>{
-      e.preventDefault();
-      const accountName=$("transferAccountName").value.trim();
-      const accountNumber=$("transferAccountNumber").value.trim();
-      const amount=Number($("transferAmount").value);
-      if(!accountName||!accountNumber||!Number.isFinite(amount)||amount<=0){showMessage("transferMessage","Enter the account name, account number, and an amount greater than zero.","error");return;}
-      const btn=$("transferSubmit");btn.disabled=true;showMessage("transferMessage","Submitting illustrative request…");
-      try{
-        const {data,error}=await supabaseClient.rpc("submit_demo_transfer",{p_account_name:accountName,p_account_number:accountNumber,p_amount:amount});
-        if(error)throw error;
-        $("transferForm").reset();
-        const {data:{user}}=await supabaseClient.auth.getUser();if(user)await loadCustomerData(user);
-        showMessage("transferMessage","Your transfer request is pending administrator review. No money has been sent or deducted.","success");
-      }catch(err){showMessage("transferMessage",err.message||"Unable to submit the request.","error");}
-      finally{btn.disabled=false;}
-    });
-    $("adminCreditForm").addEventListener("submit",async e=>{
-      e.preventDefault();
-      const accountId=Number($("creditAccount").value);
-      const rawDateTime=$("creditDateTime").value;
-      const amount=Number($("creditAmount").value);
-      const description=$("creditDescription").value.trim();
-      const isDebit=adjustmentMode==="debit";
-      const defaultDesc=isDebit?"Administrator demo debit":"Administrator demo credit";
+<div class="card section">
+<div class="section-title"><h2 data-i18n="tx_req_h2">Transfer request</h2><span class="muted small" data-i18n="tx_req_tagline">Personal Banking That Still Feels Personal</span></div>
+<form id="transferForm">
+<div class="field"><label for="transferAccountName" data-i18n="lbl_to_name">Account Name</label><input id="transferAccountName" type="text" maxlength="120" autocomplete="off" required></div>
+<div class="field"><label for="transferAccountNumber" data-i18n="lbl_to_num">Account Number</label><input id="transferAccountNumber" type="text" maxlength="80" autocomplete="off" required></div>
+<div class="field"><label for="transferAmount" data-i18n="lbl_amount_usd">Amount USD</label><input id="transferAmount" type="number" min="0.01" step="0.01" required></div>
+<button class="primary" id="transferSubmit" type="submit" data-i18n="btn_submit_req">Submit request</button>
+<p class="fineprint" data-i18n="tx_disclaimer">Send and receive money directly from your bank account Fast delivery, with money typically available in minutes, Available through Horizon Bank Internet Banking and Mobile Banking, Use a U.S. mobile number or email address to get started.</p>
+</form>
+<div id="transferMessage" aria-live="polite"></div>
+</div>
 
-      if(!Number.isSafeInteger(accountId)||accountId<=0){showMessage("creditMessage","Please select an approved customer account.","error");return;}
-      if(!rawDateTime || Number.isNaN(new Date(rawDateTime).getTime())){showMessage("creditMessage","Please select a valid date and time.","error");return;}
-      if(!Number.isFinite(amount)||amount<=0){showMessage("creditMessage","Enter a valid amount greater than zero.","error");return;}
+<div class="card section">
+<div class="section-title"><h2 data-i18n="recent_act_h2">Recent account activity</h2><span class="muted small" data-i18n="records_label">Records</span></div>
+<div class="table-wrap">
+<table class="tx-table">
+<thead><tr><th data-i18n="th_date">Date &amp; time</th><th data-i18n="th_desc">Description / recipient</th><th data-i18n="th_type">Type</th><th data-i18n="th_amount">Amount</th><th data-i18n="th_status">Status</th></tr></thead>
+<tbody id="customerTransactions"><tr><td colspan="5" class="empty" data-i18n="loading_act">Loading account activity…</td></tr></tbody>
+</table>
+</div>
+</div>
+<div id="customerMessage" aria-live="polite"></div>
+</section>
 
-      const selectedAccount=adminCustomerAccounts.find(a=>Number(a.id)===accountId);
-      const currentBalance=Number(selectedAccount?.balance ?? 0);
-      if(isDebit && amount>currentBalance){
-        showMessage("creditMessage",`Insufficient balance to debit ${money(amount)}. Available demo balance is ${money(currentBalance)}.`,"error");
-        return;
-      }
+<section id="adminView" class="hidden">
+<div class="app-head">
+<div>
+<div class="eyebrow" data-i18n="admin_eyebrow">Administration · prototype</div>
+<h1 data-i18n="admin_h1">Administrator overview</h1>
+<div class="muted" data-i18n="admin_sub">Review demo registrations and illustrative customer records.</div>
+</div>
+<div class="toolbar"><button class="secondary" id="adminRefresh" type="button" data-i18n="btn_refresh_records">Refresh records</button></div>
+</div>
 
-      const selectedIsoDate=new Date(rawDateTime).toISOString();
-      const btn=$("creditSubmit");
-      btn.disabled=true;
-      showMessage("creditMessage",isDebit?"Adding illustrative debit…":"Adding illustrative credit…");
-      try{
-        const rpcName=isDebit?"admin_add_demo_debit":"admin_add_demo_credit";
-        const rpcPattern=isDebit?/p_created_at|function admin_add_demo_debit/i:/p_created_at|function admin_add_demo_credit/i;
-        let {data,error}=await supabaseClient.rpc(rpcName,{
-          p_account_id:accountId,
-          p_amount:amount,
-          p_description:description||defaultDesc,
-          p_created_at:selectedIsoDate
-        });
-        if(error && rpcPattern.test(error.message||"")){
-          ({data,error}=await supabaseClient.rpc(rpcName,{
-            p_account_id:accountId,
-            p_amount:amount,
-            p_description:description||defaultDesc
-          }));
-        }
-        if(error)throw error;
-        const result=Array.isArray(data)?data[0]:data;
-        $("creditAmount").value="";
-        $("creditDescription").value=defaultDesc;
-        resetCreditDateTime();
-        await loadAdminData();
-        const newBalText=result?.new_balance!==undefined?` New demo balance: ${money(result.new_balance)}.`:"";
-        showMessage("creditMessage",isDebit
-          ?`Illustrative debit added successfully.${newBalText} No real money was transferred.`
-          :`Illustrative credit added successfully.${newBalText} No real money was deposited.`,
-          "success"
-        );
-      }catch(err){
-        showMessage("creditMessage",err.message||(isDebit?"Unable to add illustrative debit.":"Unable to add illustrative credit."),"error");
-      }finally{
-        btn.disabled=false;
-      }
-    });
-    $("adminTransactions").addEventListener("click",async e=>{
-      const delBtn=e.target.closest("button[data-delete-tx]");
-      if(delBtn){
-        delBtn.disabled=true;
-        try{await deleteAdminTransaction(delBtn.dataset.deleteTx);}
-        catch(err){showMessage("adminMessage",err.message||"Unable to delete transaction.","error");}
-        finally{if(delBtn)delBtn.disabled=false;}
-        return;
-      }
-      const btn=e.target.closest("button[data-review]");if(!btn)return;const newStatus=btn.dataset.newStatus;if(!confirm(`Are you sure you want to mark this illustrative demo request ${newStatus}?`))return;btn.disabled=true;try{const {error}=await supabaseClient.rpc("review_demo_transfer",{p_transaction_id:btn.dataset.review,p_new_status:newStatus});if(error)throw error;await loadAdminData();showMessage("adminMessage",`Illustrative demo request marked ${newStatus}.`,"success");}catch(err){showMessage("adminMessage",err.message||"Unable to review this request.","error");}finally{btn.disabled=false;}
-    });
-    $("customerDetailsContent").addEventListener("click",async e=>{
-      const delCustBtn=e.target.closest("button[data-delete-customer]");
-      if(delCustBtn){
-        delCustBtn.disabled=true;
-        try{await deleteAdminCustomer(delCustBtn.dataset.deleteCustomer,delCustBtn.dataset.customerName);}
-        catch(err){$("customerDetailsContent").insertAdjacentHTML("afterbegin",`<div class="message error">${safe(err.message||"Unable to delete customer account.")}</div>`);}
-        finally{if(delCustBtn)delCustBtn.disabled=false;}
-        return;
-      }
-      const delBtn=e.target.closest("button[data-delete-tx]");
-      if(!delBtn)return;
-      delBtn.disabled=true;
-      try{
-        const deleted=await deleteAdminTransaction(delBtn.dataset.deleteTx);
-        if(deleted && delBtn.dataset.detailUser) await showCustomerDetails(delBtn.dataset.detailUser);
-      }catch(err){
-        $("customerDetailsContent").insertAdjacentHTML("afterbegin",`<div class="message error">${safe(err.message||"Unable to delete transaction.")}</div>`);
-      }finally{
-        if(delBtn)delBtn.disabled=false;
-      }
-    });
-    $("customerRefresh").addEventListener("click",async()=>{try{const {data:{user}}=await supabaseClient.auth.getUser();if(user)await loadCustomerData(user);showMessage("customerMessage","Demo account information refreshed.","success");}catch(e){showMessage("customerMessage",e.message,"error");}});
-    $("adminRefresh").addEventListener("click",async()=>{try{await loadAdminData();showMessage("adminMessage","Records refreshed.","success");}catch(e){showMessage("adminMessage",e.message,"error");}});
-    $("adminCustomerSearch").addEventListener("input",renderAdminCustomers);
-    $("adminCustomers").addEventListener("click",async e=>{
-      const delCust=e.target.closest("button[data-delete-customer]");
-      if(delCust){
-        delCust.disabled=true;
-        try{await deleteAdminCustomer(delCust.dataset.deleteCustomer,delCust.dataset.customerName);}
-        catch(err){showMessage("adminMessage",err.message||"Unable to delete customer account.","error");}
-        finally{if(delCust)delCust.disabled=false;}
-        return;
-      }
-      const details=e.target.closest("button[data-customer-details]");if(details){await showCustomerDetails(details.dataset.customerDetails);return;}const btn=e.target.closest("button[data-profile]");if(!btn)return;btn.disabled=true;try{await updateApproval(btn.dataset.profile,btn.dataset.status);}catch(err){showMessage("adminMessage",err.message||"Unable to update registration.","error");}finally{btn.disabled=false;}
-    });
-    $("closeCustomerDetails").addEventListener("click",()=>$("customerDetailsModal").classList.add("hidden"));
-    $("customerDetailsModal").addEventListener("click",e=>{if(e.target.id==="customerDetailsModal")$("customerDetailsModal").classList.add("hidden");});
-    document.addEventListener("keydown",e=>{if(e.key==="Escape")$("customerDetailsModal").classList.add("hidden");});
-    $("adminCustomers").addEventListener("click",async e=>{const btn=e.target.closest("button[data-access-profile]");if(!btn)return;btn.disabled=true;try{await updateCustomerAccess(btn.dataset.accessProfile,btn.dataset.accessStatus);}catch(err){showMessage("adminMessage",err.message||"Unable to update customer access.","error");}finally{btn.disabled=false;}});
-    supabaseClient.auth.onAuthStateChange(async(event,session)=>{if(event==="SIGNED_OUT"){stopInactivityTimer();currentProfile=null;currentIsAdmin=false;showOnly("authView");}else if(event==="SIGNED_IN"&&session?.user){try{await routeUser(session.user);}catch(err){showMessage("authMessage",err.message||"Unable to load your account.","error");}}});
-    (async()=>{try{const {data:{session}}=await supabaseClient.auth.getSession();if(session?.user){try{await routeUser(session.user);}catch(err){showOnly("authView");showMessage("authMessage",err.message||"Unable to load your account.","error");}}else{showOnly("authView");setAuthMode("login");}}catch(err){showOnly("authView");showMessage("authMessage","Unable to connect. Please refresh and try again.","error");}})();
-  </script>
+<div class="grid">
+<div class="card"><div class="muted" data-i18n="stat_total_cust">Total customers</div><div class="metric" id="adminCustomerCount">—</div></div>
+<div class="card"><div class="muted" data-i18n="stat_pending_reg">Pending registrations</div><div class="metric" id="adminPendingCount">—</div></div>
+<div class="card"><div class="muted" data-i18n="stat_approved_cust">Approved customers</div><div class="metric" id="adminApprovedCount">—</div></div>
+<div class="card"><div class="muted" data-i18n="stat_pending_tx">Pending transaction requests</div><div class="metric" id="adminPendingTransactions">—</div></div>
+</div>
 
-<!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/6b01c75f1e4d633ce281270c/1k7vf5jli';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script--></body>
-</html>
+<div class="card section">
+<div class="section-title"><h2 data-i18n="cust_reg_h2">Customer registrations</h2><span class="muted small" data-i18n="review_status_sub">Review and update status</span></div>
+<input class="admin-search" id="adminCustomerSearch" type="search" placeholder="Search name, email, or account number" data-i18n-placeholder="search_cust_ph" aria-label="Search customers">
+<div id="adminCustomers"><div class="empty" data-i18n="loading_profiles">Loading customer profiles…</div></div>
+</div>
+
+<div class="card section">
+<div class="section-title"><h2 data-i18n="acc_records_h2">Account records</h2></div>
+<div class="table-wrap"><table><thead><tr><th data-i18n="th_customer">Customer</th><th data-i18n="th_acc_name">Account name</th><th data-i18n="th_acc_num">Account number</th><th data-i18n="th_type">Type</th><th data-i18n="th_illus_bal">Illustrative balance</th></tr></thead><tbody id="adminAccounts"><tr><td colspan="5" class="empty" data-i18n="loading_accs">Loading account records…</td></tr></tbody></table></div>
+</div>
+
+<div class="card section">
+<div class="section-title">
+<h2 id="adjustmentHeading">Add illustrative credit</h2>
+<span class="muted small" data-i18n="adj_sub">Administrator only · Demo balances</span>
+</div>
+<div class="mode-toggle" role="group" aria-label="Adjustment type">
+<button id="toggleCreditMode" class="active" type="button">Credit (+)</button>
+<button id="toggleDebitMode" class="debit-active" type="button">Debit (−)</button>
+</div>
+<form id="adminCreditForm">
+<div class="field">
+<label for="creditAccount" data-i18n="lbl_sel_acc">Select customer account</label>
+<select id="creditAccount" required>
+<option value="" data-i18n="opt_choose_acc">Choose an approved customer account</option>
+</select>
+</div>
+<div class="field">
+<label for="creditDateTime" data-i18n="th_date">Date &amp; Time</label>
+<input id="creditDateTime" type="datetime-local" required>
+</div>
+<div class="field">
+<label id="creditAmountLabel" for="creditAmount">Credit Amount USD</label>
+<input id="creditAmount" type="number" min="0.01" step="0.01" required>
+</div>
+<div class="field">
+<label for="creditDescription" data-i18n="lbl_desc">Description</label>
+<input id="creditDescription" type="text" maxlength="200" value="Administrator demo credit" required>
+</div>
+<button class="primary" id="creditSubmit" type="submit">Add illustrative credit</button>
+<p class="fineprint" id="adjustmentFineprint">This updates demo data only. No real money is deposited or transferred.</p>
+</form>
+<div id="creditMessage" aria-live="polite"></div>
+</div>
+
+<div class="card section">
+<div class="section-title"><h2 data-i18n="recent_tx_h2">Recent illustrative transactions</h2></div>
+<div class="table-wrap"><table><thead><tr><th data-i18n="th_date">Date &amp; time</th><th data-i18n="th_cust_id">Customer ID</th><th data-i18n="th_desc">Description</th><th data-i18n="th_rec_name">Recipient account name</th><th data-i18n="th_rec_num">Recipient account number</th><th data-i18n="th_type">Type</th><th data-i18n="th_amount">Amount</th><th data-i18n="th_status">Status</th><th data-i18n="th_review">Review</th></tr></thead><tbody id="adminTransactions"><tr><td colspan="9" class="empty" data-i18n="loading_tx">Loading transactions…</td></tr></tbody></table></div>
+</div>
+<div id="adminMessage" aria-live="polite"></div>
+</section>
+
+<div id="customerDetailsModal" class="details-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="customerDetailsTitle">
+<div class="details-panel">
+<div class="section-title">
+<div><div class="eyebrow" data-i18n="details_eyebrow">Customer record · prototype</div><h2 id="customerDetailsTitle">Customer details</h2></div>
+<button class="secondary" id="closeCustomerDetails" type="button" data-i18n="btn_close">Close</button>
+</div>
+<div id="customerDetailsContent"><div class="empty" data-i18n="loading_details">Loading customer details…</div></div>
+</div>
+</div>
+</main>
+
+<footer class="footer" data-i18n="footer_text">Advanced security features and 24/7 monitoring to protect your accounts and personal information..</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const TRANSLATIONS = {
+en: {
+brand_sub: "PERSONAL BANKING.",
+status_default: "Secure customer access",
+status_customer: "Customer preview access",
+status_admin: "Administrator access",
+sign_out: "Sign out",
+welcome_eyebrow: "A clearer view of your finances",
+welcome_h1: "Banking with a more personal perspective.",
+welcome_p: "Access your account information through a considered customer experience.",
+feat_1: "Private customer account access",
+feat_2: "Account activity in one place",
+feat_3: "Administrator-reviewed requests",
+welcome_foot: "Horizon Bank · Customer portal preview",
+auth_eyebrow: "Welcome to Horizon",
+login_title: "Sign in to your account",
+login_sub: "Enter your details to continue.",
+reg_title: "Open an account",
+reg_sub: "Complete the details below to submit your registration.",
+tab_login: "Sign in",
+tab_register: "Open an account",
+lbl_email: "Email address",
+lbl_password: "Password",
+btn_login: "Sign in securely",
+lbl_fullname: "Full name",
+lbl_phone: "Phone number",
+lbl_create_password: "Create password",
+btn_register: "Submit registration",
+reg_disclaimer: "This prototype is not a licensed financial institution. Registration is reviewed before demo customer access is enabled.",
+forbes_note: "Horizon was recognized among Forbes 2026 World’s Best Banks for our unwavering commitment to our clients, trustworthiness, and quality of financial services.",
+status_eyebrow: "Registration status",
+pending_h1: "Your registration is awaiting approval",
+pending_p: "Thank you for registering with Horizon Bank. Your email has been confirmed, and your registration is awaiting administrator approval. You will be able to access your customer dashboard once your registration is approved.",
+pending_msg: "Your registration is currently pending review.",
+rejected_h1: "We could not approve this registration",
+rejected_p: "Your registration has not been approved. Please contact the prototype administrator for further information.",
+cust_eyebrow: "Customer internet banking.",
+cust_welcome: "Welcome",
+cust_sub: "Here is your account overview.",
+btn_refresh_info: "Refresh information",
+lbl_balance: "Account balance",
+lbl_acc_type: "Account type",
+lbl_acc_record: "Account record",
+lbl_acc_status: "Account status",
+lbl_profile_ver: "Profile verification",
+tx_req_h2: "Transfer request",
+tx_req_tagline: "Personal Banking That Still Feels Personal",
+lbl_to_name: "Account Name",
+lbl_to_num: "Account Number",
+lbl_amount_usd: "Amount USD",
+btn_submit_req: "Submit request",
+tx_disclaimer: "Send and receive money directly from your bank account Fast delivery, with money typically available in minutes, Available through Horizon Bank Internet Banking and Mobile Banking, Use a U.S. mobile number or email address to get started.",
+recent_act_h2: "Recent account activity",
+records_label: "Records",
+th_date: "Date & time",
+th_desc: "Description / recipient",
+th_type: "Type",
+th_amount: "Amount",
+th_status: "Status",
+loading_act: "Loading account activity…",
+admin_eyebrow: "Administration · prototype",
+admin_h1: "Administrator overview",
+admin_sub: "Review demo registrations and illustrative customer records.",
+btn_refresh_records: "Refresh records",
+stat_total_cust: "Total customers",
+stat_pending_reg: "Pending registrations",
+stat_approved_cust: "Approved customers",
+stat_pending_tx: "Pending transaction requests",
+cust_reg_h2: "Customer registrations",
+review_status_sub: "Review and update status",
+search_cust_ph: "Search name, email, or account number",
+loading_profiles: "Loading customer profiles…",
+acc_records_h2: "Account records",
+th_customer: "Customer",
+th_acc_name: "Account name",
+th_acc_num: "Account number",
+th_illus_bal: "Illustrative balance",
+loading_accs: "Loading account records…",
+adj_heading_credit: "Add illustrative credit",
+adj_heading_debit: "Add illustrative debit",
+adj_sub: "Administrator only · Demo balances",
+lbl_sel_acc: "Select customer account",
+opt_choose_acc: "Choose an approved customer account",
+lbl_amt_credit: "Credit Amount USD",
+lbl_amt_debit: "Debit Amount USD",
+lbl_desc: "Description",
+btn_adj_credit: "Add illustrative credit",
+btn_adj_debit: "Add illustrative debit",
+fineprint_credit: "This updates demo data only. No real money is deposited or transferred.",
+fineprint_debit: "This updates demo data only. Debits are blocked if the customer's balance is insufficient.",
+recent_tx_h2: "Recent illustrative transactions",
+th_cust_id: "Customer ID",
+th_rec_name: "Recipient account name",
+th_rec_num: "Recipient account number",
+th_review: "Review",
+loading_tx: "Loading transactions…",
+details_eyebrow: "Customer record · prototype",
+btn_close: "Close",
+loading_details: "Loading customer details…",
+footer_text: "Advanced security features and 24/7 monitoring to protect your accounts and personal information..",
+tx_desc_transfer_request: "Transfer request",
+tx_desc_reversal: "Reversal",
+tx_desc_default: "Account activity",
+tx_desc_admin_credit: "Administrator demo credit",
+tx_desc_admin_debit: "Administrator demo debit",
+tx_type_credit: "Credit",
+tx_type_debit: "Debit",
+tx_status_pending: "Pending",
+tx_status_approved: "Approved",
+tx_status_completed: "Completed",
+tx_status_successful: "Successful",
+tx_status_declined: "Declined",
+tx_status_rejected: "Rejected",
+tx_status_reversed: "Reversed",
+tx_status_failed: "Failed",
+tx_status_processing: "Processing",
+lbl_no_account: "No demo account has been assigned yet",
+lbl_pending_setup: "Pending setup",
+lbl_not_assigned: "Not assigned",
+lbl_active: "active",
+opt_no_eligible_acc: "No approved active customer accounts available",
+empty_customer_tx: "No illustrative account activity is available yet.",
+empty_admin_customers: "No matching customer records found.",
+empty_admin_accounts: "No Account record found.",
+empty_admin_tx: "No illustrative transactions found.",
+empty_customer_history: "No illustrative transaction history found.",
+msg_inactivity_signed_out: "You were signed out after 3 minutes of inactivity.",
+msg_deleted_customer_access: "This customer account has been deleted and can no longer sign in.",
+msg_restricted_access: "Customer access is {status}. Please contact the prototype administrator.",
+msg_unverified_profile: "Your profile status could not be verified. Please contact the prototype administrator.",
+msg_signing_in: "Signing in…",
+msg_unable_load_account: "Unable to load your account.",
+msg_submitting_reg: "Submitting your registration…",
+msg_invalid_reg_fields: "Please complete every field and use a password of at least 8 characters.",
+msg_reg_submitted_confirm_signin: "Registration submitted. Please confirm your email address, then sign in to check your approval status.",
+msg_reg_submitted_check_email: "Registration submitted. Check your email and click the confirmation link. After confirming, return here and sign in to check your approval status.",
+msg_unable_connect: "Unable to connect. Please refresh and try again.",
+msg_invalid_transfer_input: "Enter the account name, account number, and an amount greater than zero.",
+msg_submitting_transfer: "Submitting illustrative request…",
+msg_transfer_submitted: "Your transfer request is pending administrator review. No money has been sent or deducted.",
+msg_unable_submit_transfer: "Unable to submit the request.",
+msg_customer_refreshed: "Demo account information refreshed.",
+msg_records_refreshed: "Records refreshed.",
+msg_select_approved_account: "Please select an approved customer account.",
+msg_invalid_datetime: "Please select a valid date and time.",
+msg_invalid_amount: "Enter a valid amount greater than zero.",
+msg_insufficient_debit: "Insufficient balance to debit {amount}. Available demo balance is {balance}.",
+msg_adding_debit: "Adding illustrative debit…",
+msg_adding_credit: "Adding illustrative credit…",
+msg_debit_added: "Illustrative debit added successfully.{newBal} No real money was transferred.",
+msg_credit_added: "Illustrative credit added successfully.{newBal} No real money was deposited.",
+msg_new_demo_balance: " New demo balance: {balance}.",
+msg_unable_add_debit: "Unable to add illustrative debit.",
+msg_unable_add_credit: "Unable to add illustrative credit.",
+msg_customer_deleted: "Customer account deleted and login access blocked.",
+msg_unable_delete_customer: "Unable to delete customer account.",
+msg_tx_deleted: "Illustrative transaction record deleted.",
+msg_unable_delete_tx: "Unable to delete transaction.",
+msg_unable_load_history: "Unable to load transaction history.",
+msg_reg_status_updated: "Customer registration {status}.",
+msg_unable_update_reg: "Unable to update registration.",
+msg_updating_access: "Updating customer access: {status}…",
+msg_access_updated: "Customer access {status}.",
+msg_unable_update_access: "Unable to update customer access.",
+msg_tx_reviewed: "Illustrative demo request marked {status}.",
+msg_unable_review_tx: "Unable to review this request.",
+confirm_delete_customer: "Are you sure you want to permanently delete {customer}'s account and immediately block their login access? This will remove their profile, account record, and transaction history.",
+confirm_delete_tx: "Are you sure you want to permanently delete this illustrative transaction record?",
+confirm_review_tx: "Are you sure you want to mark this illustrative demo request {status}?",
+confirm_access_change: "Are you sure you want to {action} this customer's prototype access?",
+action_reactivate: "reactivate",
+action_suspend: "suspend",
+action_deactivate: "deactivate",
+btn_view_details: "View details",
+btn_approve: "Approve",
+btn_reject: "Reject",
+btn_suspend: "Suspend",
+btn_deactivate: "Deactivate",
+btn_reactivate: "Reactivate",
+btn_delete_account: "Delete account",
+btn_delete: "Delete",
+btn_approve_demo: "Approve demo",
+btn_decline: "Decline",
+btn_reverse_demo: "Reverse demo"
+},
+es: {
+brand_sub: "BANCA PERSONAL.",
+status_default: "Acceso seguro para clientes",
+status_customer: "Acceso de vista previa del cliente",
+status_admin: "Acceso de administrador",
+sign_out: "Cerrar sesión",
+welcome_eyebrow: "Una visión más clara de tus finanzas",
+welcome_h1: "Banca con una perspectiva más personal.",
+welcome_p: "Accede a la información de tu cuenta a través de una experiencia pensada para ti.",
+feat_1: "Acceso privado a la cuenta del cliente",
+feat_2: "Actividad de la cuenta en un solo lugar",
+feat_3: "Solicitudes revisadas por el administrador",
+welcome_foot: "Horizon Bank · Vista previa del portal de clientes",
+auth_eyebrow: "Bienvenido a Horizon",
+login_title: "Inicia sesión en tu cuenta",
+login_sub: "Ingresa tus datos para continuar.",
+reg_title: "Abrir una cuenta",
+reg_sub: "Completa los datos a continuación para enviar tu registro.",
+tab_login: "Iniciar sesión",
+tab_register: "Abrir una cuenta",
+lbl_email: "Correo electrónico",
+lbl_password: "Contraseña",
+btn_login: "Iniciar sesión de forma segura",
+lbl_fullname: "Nombre completo",
+lbl_phone: "Número de teléfono",
+lbl_create_password: "Crear contraseña",
+btn_register: "Enviar registro",
+reg_disclaimer: "Este prototipo no es una institución financiera autorizada. El registro se revisa antes de habilitar el acceso de demostración.",
+forbes_note: "Horizon fue reconocido entre los Mejores Bancos del Mundo Forbes 2026 por su compromiso con los clientes, confianza y calidad de servicios.",
+status_eyebrow: "Estado del registro",
+pending_h1: "Tu registro está pendiente de aprobación",
+pending_p: "Gracias por registrarte en Horizon Bank. Tu correo ha sido confirmado y tu registro espera la aprobación del administrador.",
+pending_msg: "Tu registro está actualmente en revisión.",
+rejected_h1: "No pudimos aprobar este registro",
+rejected_p: "Tu registro no ha sido aprobado. Comunícate con el administrador del prototipo para más información.",
+cust_eyebrow: "Banca por internet para clientes.",
+cust_welcome: "Bienvenido",
+cust_sub: "Aquí tienes el resumen de tu cuenta.",
+btn_refresh_info: "Actualizar información",
+lbl_balance: "Saldo de la cuenta",
+lbl_acc_type: "Tipo de cuenta",
+lbl_acc_record: "Registro de cuenta",
+lbl_acc_status: "Estado de la cuenta",
+lbl_profile_ver: "Verificación de perfil",
+tx_req_h2: "Solicitud de transferencia",
+tx_req_tagline: "Banca personal que sigue sintiéndose personal",
+lbl_to_name: "Nombre de la cuenta",
+lbl_to_num: "Número de cuenta",
+lbl_amount_usd: "Monto en USD",
+btn_submit_req: "Enviar solicitud",
+tx_disclaimer: "Envía y recibe dinero directamente desde tu cuenta bancaria con entrega rápida a través de Horizon Bank.",
+recent_act_h2: "Actividad reciente de la cuenta",
+records_label: "Registros",
+th_date: "Fecha y hora",
+th_desc: "Descripción / destinatario",
+th_type: "Tipo",
+th_amount: "Monto",
+th_status: "Estado",
+loading_act: "Cargando actividad de la cuenta…",
+admin_eyebrow: "Administración · prototipo",
+admin_h1: "Resumen del administrador",
+admin_sub: "Revisa los registros de demostración y los datos ilustrativos de clientes.",
+btn_refresh_records: "Actualizar registros",
+stat_total_cust: "Total de clientes",
+stat_pending_reg: "Registros pendientes",
+stat_approved_cust: "Clientes aprobados",
+stat_pending_tx: "Solicitudes de transacción pendientes",
+cust_reg_h2: "Registros de clientes",
+review_status_sub: "Revisar y actualizar estado",
+search_cust_ph: "Buscar nombre, correo o número de cuenta",
+loading_profiles: "Cargando perfiles de clientes…",
+acc_records_h2: "Registros de cuentas",
+th_customer: "Cliente",
+th_acc_name: "Nombre de cuenta",
+th_acc_num: "Número de cuenta",
+th_illus_bal: "Saldo ilustrativo",
+loading_accs: "Cargando registros de cuentas…",
+adj_heading_credit: "Agregar crédito ilustrativo",
+adj_heading_debit: "Agregar débito ilustrativo",
+adj_sub: "Solo administrador · Saldos de demostración",
+lbl_sel_acc: "Seleccionar cuenta de cliente",
+opt_choose_acc: "Elige una cuenta de cliente aprobada",
+lbl_amt_credit: "Monto de crédito en USD",
+lbl_amt_debit: "Monto de débito en USD",
+lbl_desc: "Descripción",
+btn_adj_credit: "Agregar crédito ilustrativo",
+btn_adj_debit: "Agregar débito ilustrativo",
+fineprint_credit: "Esto actualiza solo datos de demostración. No se deposita ni transfiere dinero real.",
+fineprint_debit: "Esto actualiza solo datos de demostración. Los débitos se bloquean si el saldo es insuficiente.",
+recent_tx_h2: "Transacciones ilustrativas recientes",
+th_cust_id: "ID de cliente",
+th_rec_name: "Nombre de cuenta destinatario",
+th_rec_num: "Número de cuenta destinatario",
+th_review: "Revisión",
+loading_tx: "Cargando transacciones…",
+details_eyebrow: "Registro de cliente · prototipo",
+btn_close: "Cerrar",
+loading_details: "Cargando detalles del cliente…",
+footer_text: "Funciones de seguridad avanzadas y monitoreo 24/7 para proteger tus cuentas e información personal.",
+tx_desc_transfer_request: "Solicitud de transferencia",
+tx_desc_reversal: "Reversión",
+tx_desc_default: "Actividad de la cuenta",
+tx_desc_admin_credit: "Crédito de demostración del administrador",
+tx_desc_admin_debit: "Débito de demostración del administrador",
+tx_type_credit: "Crédito",
+tx_type_debit: "Débito",
+tx_status_pending: "Pendiente",
+tx_status_approved: "Aprobado",
+tx_status_completed: "Completado",
+tx_status_successful: "Exitoso",
+tx_status_declined: "Rechazado",
+tx_status_rejected: "Rechazado",
+tx_status_reversed: "Revertido",
+tx_status_failed: "Fallido",
+tx_status_processing: "En proceso",
+lbl_no_account: "Aún no se ha asignado una cuenta de demostración",
+lbl_pending_setup: "Configuración pendiente",
+lbl_not_assigned: "No asignado",
+lbl_active: "activo",
+opt_no_eligible_acc: "No hay cuentas de clientes activas y aprobadas disponibles",
+empty_customer_tx: "Aún no hay actividad de cuenta ilustrativa disponible.",
+empty_admin_customers: "No se encontraron registros de clientes coincidentes.",
+empty_admin_accounts: "No se encontró ningún registro de cuenta.",
+empty_admin_tx: "No se encontraron transacciones ilustrativas.",
+empty_customer_history: "No se encontró historial de transacciones ilustrativas.",
+msg_inactivity_signed_out: "Se cerró tu sesión tras 3 minutos de inactividad.",
+msg_deleted_customer_access: "Esta cuenta de cliente ha sido eliminada y ya no puede iniciar sesión.",
+msg_restricted_access: "El acceso del cliente está {status}. Comunícate con el administrador del prototipo.",
+msg_unverified_profile: "No se pudo verificar el estado de tu perfil. Comunícate con el administrador del prototipo.",
+msg_signing_in: "Iniciando sesión…",
+msg_unable_load_account: "No se pudo cargar tu cuenta.",
+msg_submitting_reg: "Enviando tu registro…",
+msg_invalid_reg_fields: "Completa todos los campos y usa una contraseña de al menos 8 caracteres.",
+msg_reg_submitted_confirm_signin: "Registro enviado. Confirma tu correo electrónico y luego inicia sesión para revisar el estado de aprobación.",
+msg_reg_submitted_check_email: "Registro enviado. Revisa tu correo y haz clic en el enlace de confirmación. Luego vuelve aquí e inicia sesión.",
+msg_unable_connect: "No se pudo conectar. Actualiza la página e inténtalo de nuevo.",
+msg_invalid_transfer_input: "Ingresa el nombre de la cuenta, el número de cuenta y un monto mayor que cero.",
+msg_submitting_transfer: "Enviando solicitud ilustrativa…",
+msg_transfer_submitted: "Tu solicitud de transferencia está pendiente de revisión por el administrador. No se envió ni descontó dinero.",
+msg_unable_submit_transfer: "No se pudo enviar la solicitud.",
+msg_customer_refreshed: "Información de cuenta de demostración actualizada.",
+msg_records_refreshed: "Registros actualizados.",
+msg_select_approved_account: "Selecciona una cuenta de cliente aprobada.",
+msg_invalid_datetime: "Selecciona una fecha y hora válidas.",
+msg_invalid_amount: "Ingresa un monto válido mayor que cero.",
+msg_insufficient_debit: "Saldo insuficiente para debitar {amount}. El saldo de demostración disponible es {balance}.",
+msg_adding_debit: "Agregando débito ilustrativo…",
+msg_adding_credit: "Agregando crédito ilustrativo…",
+msg_debit_added: "Débito ilustrativo agregado correctamente.{newBal} No se transfirió dinero real.",
+msg_credit_added: "Crédito ilustrativo agregado correctamente.{newBal} No se depositó dinero real.",
+msg_new_demo_balance: " Nuevo saldo de demostración: {balance}.",
+msg_unable_add_debit: "No se pudo agregar el débito ilustrativo.",
+msg_unable_add_credit: "No se pudo agregar el crédito ilustrativo.",
+msg_customer_deleted: "Cuenta de cliente eliminada y acceso de inicio de sesión bloqueado.",
+msg_unable_delete_customer: "No se pudo eliminar la cuenta del cliente.",
+msg_tx_deleted: "Registro de transacción ilustrativa eliminado.",
+msg_unable_delete_tx: "No se pudo eliminar la transacción.",
+msg_unable_load_history: "No se pudo cargar el historial de transacciones.",
+msg_reg_status_updated: "Registro de cliente: {status}.",
+msg_unable_update_reg: "No se pudo actualizar el registro.",
+msg_updating_access: "Actualizando acceso del cliente: {status}…",
+msg_access_updated: "Acceso del cliente: {status}.",
+msg_unable_update_access: "No se pudo actualizar el acceso del cliente.",
+msg_tx_reviewed: "Solicitud de demostración marcada como {status}.",
+msg_unable_review_tx: "No se pudo revisar esta solicitud.",
+confirm_delete_customer: "¿Seguro que deseas eliminar permanentemente la cuenta de {customer} y bloquear su acceso de inmediato? Esto eliminará su perfil, cuenta e historial de transacciones.",
+confirm_delete_tx: "¿Seguro que deseas eliminar permanentemente este registro de transacción ilustrativa?",
+confirm_review_tx: "¿Seguro que deseas marcar esta solicitud de demostración como {status}?",
+confirm_access_change: "¿Seguro que deseas {action} el acceso de prototipo de este cliente?",
+action_reactivate: "reactivar",
+action_suspend: "suspender",
+action_deactivate: "desactivar",
+btn_view_details: "Ver detalles",
+btn_approve: "Aprobar",
+btn_reject: "Rechazar",
+btn_suspend: "Suspender",
+btn_deactivate: "Desactivar",
+btn_reactivate: "Reactivar",
+btn_delete_account: "Eliminar cuenta",
+btn_delete: "Eliminar",
+btn_approve_demo: "Aprobar demo",
+btn_decline: "Rechazar",
+btn_reverse_demo: "Revertir demo"
+},
+fr: {
+brand_sub: "BANQUE PERSONNELLE.",
+status_default: "Accès client sécurisé",
+status_customer: "Accès aperçu client",
+status_admin: "Accès administrateur",
+sign_out: "Déconnexion",
+welcome_eyebrow: "Une vision plus claire de vos finances",
+welcome_h1: "La banque avec une approche plus personnelle.",
+welcome_p: "Accédez aux informations de votre compte via une expérience client soignée.",
+feat_1: "Accès privé au compte client",
+feat_2: "Activité du compte au même endroit",
+feat_3: "Demandes examinées par l'administrateur",
+welcome_foot: "Horizon Bank · Aperçu du portail client",
+auth_eyebrow: "Bienvenue chez Horizon",
+login_title: "Connectez-vous à votre compte",
+login_sub: "Saisissez vos informations pour continuer.",
+reg_title: "Ouvrir un compte",
+reg_sub: "Remplissez les champs ci-dessous pour soumettre votre inscription.",
+tab_login: "Connexion",
+tab_register: "Ouvrir un compte",
+lbl_email: "Adresse e-mail",
+lbl_password: "Mot de passe",
+btn_login: "Connexion sécurisée",
+lbl_fullname: "Nom complet",
+lbl_phone: "Numéro de téléphone",
+lbl_create_password: "Créer un mot de passe",
+btn_register: "Soumettre l'inscription",
+reg_disclaimer: "Ce prototype n'est pas un établissement financier agréé. L'inscription est vérifiée avant l'accès démo.",
+forbes_note: "Horizon a figuré parmi les Meilleures Banques du Monde Forbes 2026 pour son engagement envers ses clients et la qualité de ses services.",
+status_eyebrow: "Statut de l'inscription",
+pending_h1: "Votre inscription est en attente d'approbation",
+pending_p: "Merci pour votre inscription auprès de Horizon Bank. Votre e-mail est confirmé et votre dossier attend l'approbation de l'administrateur.",
+pending_msg: "Votre inscription est en cours d'examen.",
+rejected_h1: "Nous n'avons pas pu approuver cette inscription",
+rejected_p: "Votre inscription n'a pas été approuvée. Veuillez contacter l'administrateur du prototype.",
+cust_eyebrow: "Banque en ligne client.",
+cust_welcome: "Bienvenue",
+cust_sub: "Voici l'aperçu de votre compte.",
+btn_refresh_info: "Actualiser les informations",
+lbl_balance: "Solde du compte",
+lbl_acc_type: "Type de compte",
+lbl_acc_record: "Fiche de compte",
+lbl_acc_status: "Statut du compte",
+lbl_profile_ver: "Vérification du profil",
+tx_req_h2: "Demande de virement",
+tx_req_tagline: "Une banque personnelle qui reste proche de vous",
+lbl_to_name: "Nom du compte",
+lbl_to_num: "Numéro de compte",
+lbl_amount_usd: "Montant en USD",
+btn_submit_req: "Envoyer la demande",
+tx_disclaimer: "Envoyez et recevez de l'argent directement depuis votre compte via Horizon Bank Internet Banking et Mobile Banking.",
+recent_act_h2: "Activité récente du compte",
+records_label: "Archives",
+th_date: "Date et heure",
+th_desc: "Description / bénéficiaire",
+th_type: "Type",
+th_amount: "Montant",
+th_status: "Statut",
+loading_act: "Chargement de l'activité du compte…",
+admin_eyebrow: "Administration · prototype",
+admin_h1: "Aperçu administrateur",
+admin_sub: "Examinez les inscriptions démo et les dossiers clients illustratifs.",
+btn_refresh_records: "Actualiser les dossiers",
+stat_total_cust: "Total clients",
+stat_pending_reg: "Inscriptions en attente",
+stat_approved_cust: "Clients approuvés",
+stat_pending_tx: "Demandes de transaction en attente",
+cust_reg_h2: "Inscriptions clients",
+review_status_sub: "Examiner et mettre à jour le statut",
+search_cust_ph: "Rechercher nom, e-mail ou numéro de compte",
+loading_profiles: "Chargement des profils clients…",
+acc_records_h2: "Dossiers de comptes",
+th_customer: "Client",
+th_acc_name: "Nom du compte",
+th_acc_num: "Numéro de compte",
+th_illus_bal: "Solde illustratif",
+loading_accs: "Chargement des comptes…",
+adj_heading_credit: "Ajouter un crédit illustratif",
+adj_heading_debit: "Ajouter un débit illustratif",
+adj_sub: "Administrateur uniquement · Soldes démo",
+lbl_sel_acc: "Sélectionner un compte client",
+opt_choose_acc: "Choisir un compte client approuvé",
+lbl_amt_credit: "Montant du crédit en USD",
+lbl_amt_debit: "Montant du débit en USD",
+lbl_desc: "Description",
+btn_adj_credit: "Ajouter un crédit illustratif",
+btn_adj_debit: "Ajouter un débit illustratif",
+fineprint_credit: "Mise à jour des données démo uniquement. Aucun argent réel n'est déposé ou transféré.",
+fineprint_debit: "Mise à jour des données démo uniquement. Les débits sont bloqués si le solde est insuffisant.",
+recent_tx_h2: "Transactions illustratives récentes",
+th_cust_id: "ID client",
+th_rec_name: "Nom du compte bénéficiaire",
+th_rec_num: "Numéro du compte bénéficiaire",
+th_review: "Examen",
+loading_tx: "Chargement des transactions…",
+details_eyebrow: "Fiche client · prototype",
+btn_close: "Fermer",
+loading_details: "Chargement des détails du client…",
+footer_text: "Fonctions de sécurité avancées et surveillance 24h/24 et 7j/7 pour protéger vos comptes et données personnelles.",
+tx_desc_transfer_request: "Demande de virement",
+tx_desc_reversal: "Annulation",
+tx_desc_default: "Activité du compte",
+tx_desc_admin_credit: "Crédit démo administrateur",
+tx_desc_admin_debit: "Débit démo administrateur",
+tx_type_credit: "Crédit",
+tx_type_debit: "Débit",
+tx_status_pending: "En attente",
+tx_status_approved: "Approuvé",
+tx_status_completed: "Terminé",
+tx_status_successful: "Réussi",
+tx_status_declined: "Refusé",
+tx_status_rejected: "Rejeté",
+tx_status_reversed: "Annulé",
+tx_status_failed: "Échoué",
+tx_status_processing: "En cours",
+lbl_no_account: "Aucun compte démo n'a encore été attribué",
+lbl_pending_setup: "Configuration en attente",
+lbl_not_assigned: "Non attribué",
+lbl_active: "actif",
+opt_no_eligible_acc: "Aucun compte client actif et approuvé disponible",
+empty_customer_tx: "Aucune activité de compte illustrative disponible pour le moment.",
+empty_admin_customers: "Aucun dossier client correspondant trouvé.",
+empty_admin_accounts: "Aucun dossier de compte trouvé.",
+empty_admin_tx: "Aucune transaction illustrative trouvée.",
+empty_customer_history: "Aucun historique de transactions illustratives trouvé.",
+msg_inactivity_signed_out: "Vous avez été déconnecté après 3 minutes d'inactivité.",
+msg_deleted_customer_access: "Ce compte client a été supprimé et ne peut plus se connecter.",
+msg_restricted_access: "L'accès client est {status}. Veuillez contacter l'administrateur du prototype.",
+msg_unverified_profile: "Le statut de votre profil n'a pas pu être vérifié. Veuillez contacter l'administrateur du prototype.",
+msg_signing_in: "Connexion en cours…",
+msg_unable_load_account: "Impossible de charger votre compte.",
+msg_submitting_reg: "Envoi de votre inscription…",
+msg_invalid_reg_fields: "Veuillez remplir tous les champs et utiliser un mot de passe d'au moins 8 caractères.",
+msg_reg_submitted_confirm_signin: "Inscription soumise. Veuillez confirmer votre adresse e-mail, puis connectez-vous pour vérifier l'approbation.",
+msg_reg_submitted_check_email: "Inscription soumise. Consultez votre e-mail et cliquez sur le lien de confirmation, puis revenez vous connecter.",
+msg_unable_connect: "Connexion impossible. Actualisez la page et réessayez.",
+msg_invalid_transfer_input: "Saisissez le nom du compte, le numéro de compte et un montant supérieur à zéro.",
+msg_submitting_transfer: "Envoi de la demande illustrative…",
+msg_transfer_submitted: "Votre demande de virement est en attente d'examen par l'administrateur. Aucun argent n'a été envoyé ou débité.",
+msg_unable_submit_transfer: "Impossible d'envoyer la demande.",
+msg_customer_refreshed: "Informations du compte démo actualisées.",
+msg_records_refreshed: "Dossiers actualisés.",
+msg_select_approved_account: "Veuillez sélectionner un compte client approuvé.",
+msg_invalid_datetime: "Veuillez sélectionner une date et une heure valides.",
+msg_invalid_amount: "Saisissez un montant valide supérieur à zéro.",
+msg_insufficient_debit: "Solde insuffisant pour débiter {amount}. Le solde démo disponible est de {balance}.",
+msg_adding_debit: "Ajout d'un débit illustratif…",
+msg_adding_credit: "Ajout d'un crédit illustratif…",
+msg_debit_added: "Débit illustratif ajouté.{newBal} Aucun argent réel n'a été transféré.",
+msg_credit_added: "Crédit illustratif ajouté.{newBal} Aucun argent réel n'a été déposé.",
+msg_new_demo_balance: " Nouveau solde démo : {balance}.",
+msg_unable_add_debit: "Impossible d'ajouter le débit illustratif.",
+msg_unable_add_credit: "Impossible d'ajouter le crédit illustratif.",
+msg_customer_deleted: "Compte client supprimé et accès de connexion bloqué.",
+msg_unable_delete_customer: "Impossible de supprimer le compte client.",
+msg_tx_deleted: "Enregistrement de transaction illustrative supprimé.",
+msg_unable_delete_tx: "Impossible de supprimer la transaction.",
+msg_unable_load_history: "Impossible de charger l'historique des transactions.",
+msg_reg_status_updated: "Inscription client : {status}.",
+msg_unable_update_reg: "Impossible de mettre à jour l'inscription.",
+msg_updating_access: "Mise à jour de l'accès client : {status}…",
+msg_access_updated: "Accès client : {status}.",
+msg_unable_update_access: "Impossible de mettre à jour l'accès client.",
+msg_tx_reviewed: "Demande démo marquée comme {status}.",
+msg_unable_review_tx: "Impossible d'examiner cette demande.",
+confirm_delete_customer: "Voulez-vous vraiment supprimer définitivement le compte de {customer} et bloquer immédiatement sa connexion ? Cela supprimera son profil, son compte et l'historique des transactions.",
+confirm_delete_tx: "Voulez-vous vraiment supprimer définitivement cet enregistrement de transaction illustrative ?",
+confirm_review_tx: "Voulez-vous vraiment marquer cette demande démo comme {status} ?",
+confirm_access_change: "Voulez-vous vraiment {action} l'accès prototype de ce client ?",
+action_reactivate: "réactiver",
+action_suspend: "suspendre",
+action_deactivate: "désactiver",
+btn_view_details: "Voir détails",
+btn_approve: "Approuver",
+btn_reject: "Rejeter",
+btn_suspend: "Suspendre",
+btn_deactivate: "Désactiver",
+btn_reactivate: "Réactiver",
+btn_delete_account: "Supprimer le compte",
+btn_delete: "Supprimer",
+btn_approve_demo: "Approuver démo",
+btn_decline: "Refuser",
+btn_reverse_demo: "Annuler démo"
+},
+ru: {
+brand_sub: "ЛИЧНЫЙ БАНКИНГ.",
+status_default: "Безопасный доступ клиента",
+status_customer: "Предпросмотр доступа клиента",
+status_admin: "Доступ администратора",
+sign_out: "Выйти",
+welcome_eyebrow: "Более ясный взгляд на ваши финансы",
+welcome_h1: "Банкинг с более личным подходом.",
+welcome_p: "Получите доступ к информации о счёте в продуманном клиентском интерфейсе.",
+feat_1: "Частный доступ к счёту клиента",
+feat_2: "Операции по счёту в одном месте",
+feat_3: "Запросы, проверяемые администратором",
+welcome_foot: "Horizon Bank · Предпросмотр клиентского портала",
+auth_eyebrow: "Добро пожаловать в Horizon",
+login_title: "Войдите в свой аккаунт",
+login_sub: "Введите данные для продолжения.",
+reg_title: "Открыть счёт",
+reg_sub: "Заполните данные ниже, чтобы отправить заявку на регистрацию.",
+tab_login: "Вход",
+tab_register: "Открыть счёт",
+lbl_email: "Электронная почта",
+lbl_password: "Пароль",
+btn_login: "Безопасный вход",
+lbl_fullname: "Полное имя",
+lbl_phone: "Номер телефона",
+lbl_create_password: "Придумайте пароль",
+btn_register: "Отправить заявку",
+reg_disclaimer: "Этот прототип не является лицензированной финансовой организацией. Регистрация проверяется перед открытием демо-доступа.",
+forbes_note: "Horizon вошёл в число лучших банков мира по версии Forbes 2026 за приверженность клиентам, надёжность и качество услуг.",
+status_eyebrow: "Статус регистрации",
+pending_h1: "Ваша регистрация ожидает одобрения",
+pending_p: "Спасибо за регистрацию в Horizon Bank. Ваша почта подтверждена, заявка ожидает одобрения администратора.",
+pending_msg: "Ваша регистрация сейчас на проверке.",
+rejected_h1: "Не удалось одобрить эту регистрацию",
+rejected_p: "Ваша регистрация не одобрена. Обратитесь к администратору прототипа для уточнения деталей.",
+cust_eyebrow: "Интернет-банк для клиентов.",
+cust_welcome: "Добро пожаловать",
+cust_sub: "Краткая сводка по вашему счёту.",
+btn_refresh_info: "Обновить данные",
+lbl_balance: "Баланс счёта",
+lbl_acc_type: "Тип счёта",
+lbl_acc_record: "Запись счёта",
+lbl_acc_status: "Статус счёта",
+lbl_profile_ver: "Проверка профиля",
+tx_req_h2: "Запрос на перевод",
+tx_req_tagline: "Личный банкинг с заботой о вас",
+lbl_to_name: "Название счёта",
+lbl_to_num: "Номер счёта",
+lbl_amount_usd: "Сумма в USD",
+btn_submit_req: "Отправить запрос",
+tx_disclaimer: "Отправляйте и получайте средства со счёта в Horizon Bank Internet Banking и Mobile Banking.",
+recent_act_h2: "Недавняя активность по счёту",
+records_label: "Записи",
+th_date: "Дата и время",
+th_desc: "Описание / получатель",
+th_type: "Тип",
+th_amount: "Сумма",
+th_status: "Статус",
+loading_act: "Загрузка активности по счёту…",
+admin_eyebrow: "Администрирование · прототип",
+admin_h1: "Обзор администратора",
+admin_sub: "Проверяйте демо-регистрации и примерные записи клиентов.",
+btn_refresh_records: "Обновить записи",
+stat_total_cust: "Всего клиентов",
+stat_pending_reg: "Ожидающие регистрации",
+stat_approved_cust: "Одобренные клиенты",
+stat_pending_tx: "Ожидающие запросы на операции",
+cust_reg_h2: "Регистрации клиентов",
+review_status_sub: "Проверка и обновление статуса",
+search_cust_ph: "Поиск по имени, почте или номеру счёта",
+loading_profiles: "Загрузка профилей клиентов…",
+acc_records_h2: "Записи счетов",
+th_customer: "Клиент",
+th_acc_name: "Название счёта",
+th_acc_num: "Номер счёта",
+th_illus_bal: "Примерный баланс",
+loading_accs: "Загрузка записей счетов…",
+adj_heading_credit: "Добавить примерное зачисление",
+adj_heading_debit: "Добавить примерное списание",
+adj_sub: "Только администратор · Демо-балансы",
+lbl_sel_acc: "Выберите счёт клиента",
+opt_choose_acc: "Выберите одобренный счёт клиента",
+lbl_amt_credit: "Сумма зачисления в USD",
+lbl_amt_debit: "Сумма списания в USD",
+lbl_desc: "Описание",
+btn_adj_credit: "Добавить примерное зачисление",
+btn_adj_debit: "Добавить примерное списание",
+fineprint_credit: "Обновляются только демо-данные. Реальные средства не зачисляются и не переводятся.",
+fineprint_debit: "Обновляются только демо-данные. Списания блокируются при недостаточном балансе.",
+recent_tx_h2: "Недавние примерные операции",
+th_cust_id: "ID клиента",
+th_rec_name: "Название счёта получателя",
+th_rec_num: "Номер счёта получателя",
+th_review: "Проверка",
+loading_tx: "Загрузка операций…",
+details_eyebrow: "Запись клиента · прототип",
+btn_close: "Закрыть",
+loading_details: "Загрузка данных клиента…",
+footer_text: "Современные средства защиты и круглосуточный мониторинг для безопасности ваших счетов и данных.",
+tx_desc_transfer_request: "Запрос на перевод",
+tx_desc_reversal: "Отмена операции",
+tx_desc_default: "Активность по счёту",
+tx_desc_admin_credit: "Демо-зачисление администратора",
+tx_desc_admin_debit: "Демо-списание администратора",
+tx_type_credit: "Зачисление",
+tx_type_debit: "Списание",
+tx_status_pending: "Ожидает",
+tx_status_approved: "Одобрено",
+tx_status_completed: "Завершено",
+tx_status_successful: "Успешно",
+tx_status_declined: "Отклонено",
+tx_status_rejected: "Отклонено",
+tx_status_reversed: "Отменено",
+tx_status_failed: "Ошибка",
+tx_status_processing: "В обработке",
+lbl_no_account: "Демо-счёт ещё не назначен",
+lbl_pending_setup: "Ожидает настройки",
+lbl_not_assigned: "Не назначен",
+lbl_active: "активен",
+opt_no_eligible_acc: "Нет доступных одобренных активных счетов клиентов",
+empty_customer_tx: "Примерная активность по счёту пока отсутствует.",
+empty_admin_customers: "Подходящие записи клиентов не найдены.",
+empty_admin_accounts: "Записи счетов не найдены.",
+empty_admin_tx: "Примерные операции не найдены.",
+empty_customer_history: "История примерных операций не найдена.",
+msg_inactivity_signed_out: "Вы вышли из системы после 3 минут бездействия.",
+msg_deleted_customer_access: "Этот счёт клиента удалён, вход больше невозможен.",
+msg_restricted_access: "Доступ клиента: {status}. Обратитесь к администратору прототипа.",
+msg_unverified_profile: "Не удалось подтвердить статус профиля. Обратитесь к администратору прототипа.",
+msg_signing_in: "Вход…",
+msg_unable_load_account: "Не удалось загрузить ваш аккаунт.",
+msg_submitting_reg: "Отправка заявки на регистрацию…",
+msg_invalid_reg_fields: "Заполните все поля и укажите пароль не короче 8 символов.",
+msg_reg_submitted_confirm_signin: "Заявка отправлена. Подтвердите электронную почту и войдите, чтобы проверить статус.",
+msg_reg_submitted_check_email: "Заявка отправлена. Проверьте почту, перейдите по ссылке подтверждения и вернитесь для входа.",
+msg_unable_connect: "Не удалось подключиться. Обновите страницу и попробуйте снова.",
+msg_invalid_transfer_input: "Введите название счёта, номер счёта и сумму больше нуля.",
+msg_submitting_transfer: "Отправка примерного запроса…",
+msg_transfer_submitted: "Ваш запрос на перевод ожидает проверки администратором. Средства не отправлялись и не списывались.",
+msg_unable_submit_transfer: "Не удалось отправить запрос.",
+msg_customer_refreshed: "Данные демо-счёта обновлены.",
+msg_records_refreshed: "Записи обновлены.",
+msg_select_approved_account: "Выберите одобренный счёт клиента.",
+msg_invalid_datetime: "Выберите корректные дату и время.",
+msg_invalid_amount: "Введите корректную сумму больше нуля.",
+msg_insufficient_debit: "Недостаточно средств для списания {amount}. Доступный демо-баланс: {balance}.",
+msg_adding_debit: "Добавление примерного списания…",
+msg_adding_credit: "Добавление примерного зачисления…",
+msg_debit_added: "Примерное списание добавлено.{newBal} Реальные средства не переводились.",
+msg_credit_added: "Примерное зачисление добавлено.{newBal} Реальные средства не зачислялись.",
+msg_new_demo_balance: " Новый демо-баланс: {balance}.",
+msg_unable_add_debit: "Не удалось добавить примерное списание.",
+msg_unable_add_credit: "Не удалось добавить примерное зачисление.",
+msg_customer_deleted: "Счёт клиента удалён, доступ заблокирован.",
+msg_unable_delete_customer: "Не удалось удалить счёт клиента.",
+msg_tx_deleted: "Запись примерной операции удалена.",
+msg_unable_delete_tx: "Не удалось удалить операцию.",
+msg_unable_load_history: "Не удалось загрузить историю операций.",
+msg_reg_status_updated: "Статус регистрации клиента: {status}.",
+msg_unable_update_reg: "Не удалось обновить регистрацию.",
+msg_updating_access: "Обновление доступа клиента: {status}…",
+msg_access_updated: "Доступ клиента: {status}.",
+msg_unable_update_access: "Не удалось обновить доступ клиента.",
+msg_tx_reviewed: "Примерный запрос отмечен как {status}.",
+msg_unable_review_tx: "Не удалось проверить этот запрос.",
+confirm_delete_customer: "Вы уверены, что хотите навсегда удалить счёт {customer} и заблокировать вход? Это удалит профиль, счёт и историю операций.",
+confirm_delete_tx: "Вы уверены, что хотите навсегда удалить эту запись примерной операции?",
+confirm_review_tx: "Вы уверены, что хотите отметить этот примерный запрос как {status}?",
+confirm_access_change: "Вы уверены, что хотите {action} демо-доступ этого клиента?",
+action_reactivate: "восстановить",
+action_suspend: "приостановить",
+action_deactivate: "деактивировать",
+btn_view_details: "Подробнее",
+btn_approve: "Одобрить",
+btn_reject: "Отклонить",
+btn_suspend: "Приостановить",
+btn_deactivate: "Деактивировать",
+btn_reactivate: "Восстановить",
+btn_delete_account: "Удалить счёт",
+btn_delete: "Удалить",
+btn_approve_demo: "Одобрить демо",
+btn_decline: "Отклонить",
+btn_reverse_demo: "Отменить демо"
+},
+pt: {
+brand_sub: "BANCA PESSOAL.",
+status_default: "Acesso seguro do cliente",
+status_customer: "Acesso de pré-visualização do cliente",
+status_admin: "Acesso de administrador",
+sign_out: "Sair",
+welcome_eyebrow: "Uma visão mais clara das suas finanças",
+welcome_h1: "Banca com uma perspetiva mais pessoal.",
+welcome_p: "Aceda às informações da sua conta através de uma experiência cuidada.",
+feat_1: "Acesso privado à conta do cliente",
+feat_2: "Atividade da conta num só lugar",
+feat_3: "Pedidos revistos pelo administrador",
+welcome_foot: "Horizon Bank · Pré-visualização do portal do cliente",
+auth_eyebrow: "Bem-vindo à Horizon",
+login_title: "Inicie sessão na sua conta",
+login_sub: "Introduza os seus dados para continuar.",
+reg_title: "Abrir uma conta",
+reg_sub: "Preencha os campos abaixo para submeter o registo.",
+tab_login: "Iniciar sessão",
+tab_register: "Abrir uma conta",
+lbl_email: "Endereço de e-mail",
+lbl_password: "Palavra-passe",
+btn_login: "Iniciar sessão com segurança",
+lbl_fullname: "Nome completo",
+lbl_phone: "Número de telefone",
+lbl_create_password: "Criar palavra-passe",
+btn_register: "Submeter registo",
+reg_disclaimer: "Este protótipo não é uma instituição financeira licenciada. O registo é revisto antes de ativar o acesso de demonstração.",
+forbes_note: "A Horizon foi reconhecida entre os Melhores Bancos do Mundo Forbes 2026 pelo compromisso com os clientes, confiança e qualidade dos serviços.",
+status_eyebrow: "Estado do registo",
+pending_h1: "O seu registo aguarda aprovação",
+pending_p: "Obrigado por se registar no Horizon Bank. O seu e-mail foi confirmado e o registo aguarda aprovação do administrador.",
+pending_msg: "O seu registo encontra-se em análise.",
+rejected_h1: "Não foi possível aprovar este registo",
+rejected_p: "O seu registo não foi aprovado. Contacte o administrador do protótipo para mais informações.",
+cust_eyebrow: "Banca online para clientes.",
+cust_welcome: "Bem-vindo",
+cust_sub: "Aqui está o resumo da sua conta.",
+btn_refresh_info: "Atualizar informações",
+lbl_balance: "Saldo da conta",
+lbl_acc_type: "Tipo de conta",
+lbl_acc_record: "Registo da conta",
+lbl_acc_status: "Estado da conta",
+lbl_profile_ver: "Verificação de perfil",
+tx_req_h2: "Pedido de transferência",
+tx_req_tagline: "Banca pessoal que continua a parecer pessoal",
+lbl_to_name: "Nome da conta",
+lbl_to_num: "Número da conta",
+lbl_amount_usd: "Valor em USD",
+btn_submit_req: "Submeter pedido",
+tx_disclaimer: "Envie e receba dinheiro diretamente da sua conta através do Horizon Bank Internet Banking e Mobile Banking.",
+recent_act_h2: "Atividade recente da conta",
+records_label: "Registos",
+th_date: "Data e hora",
+th_desc: "Descrição / destinatário",
+th_type: "Tipo",
+th_amount: "Valor",
+th_status: "Estado",
+loading_act: "A carregar atividade da conta…",
+admin_eyebrow: "Administração · protótipo",
+admin_h1: "Resumo do administrador",
+admin_sub: "Reveja registos de demonstração e dados ilustrativos de clientes.",
+btn_refresh_records: "Atualizar registos",
+stat_total_cust: "Total de clientes",
+stat_pending_reg: "Registos pendentes",
+stat_approved_cust: "Clientes aprovados",
+stat_pending_tx: "Pedidos de transação pendentes",
+cust_reg_h2: "Registos de clientes",
+review_status_sub: "Rever e atualizar estado",
+search_cust_ph: "Pesquisar nome, e-mail ou número de conta",
+loading_profiles: "A carregar perfis de clientes…",
+acc_records_h2: "Registos de contas",
+th_customer: "Cliente",
+th_acc_name: "Nome da conta",
+th_acc_num: "Número da conta",
+th_illus_bal: "Saldo ilustrativo",
+loading_accs: "A carregar registos de contas…",
+adj_heading_credit: "Adicionar crédito ilustrativo",
+adj_heading_debit: "Adicionar débito ilustrativo",
+adj_sub: "Apenas administrador · Saldos de demonstração",
+lbl_sel_acc: "Selecionar conta de cliente",
+opt_choose_acc: "Escolha uma conta de cliente aprovada",
+lbl_amt_credit: "Valor de crédito em USD",
+lbl_amt_debit: "Valor de débito em USD",
+lbl_desc: "Descrição",
+btn_adj_credit: "Adicionar crédito ilustrativo",
+btn_adj_debit: "Adicionar débito ilustrativo",
+fineprint_credit: "Atualiza apenas dados de demonstração. Nenhum dinheiro real é depositado ou transferido.",
+fineprint_debit: "Atualiza apenas dados de demonstração. Débitos são bloqueados se o saldo for insuficiente.",
+recent_tx_h2: "Transações ilustrativas recentes",
+th_cust_id: "ID do cliente",
+th_rec_name: "Nome da conta destinatária",
+th_rec_num: "Número da conta destinatária",
+th_review: "Revisão",
+loading_tx: "A carregar transações…",
+details_eyebrow: "Registo de cliente · protótipo",
+btn_close: "Fechar",
+loading_details: "A carregar detalhes do cliente…",
+footer_text: "Funcionalidades de segurança avançadas e monitorização 24/7 para proteger as suas contas e dados pessoais.",
+tx_desc_transfer_request: "Pedido de transferência",
+tx_desc_reversal: "Estorno",
+tx_desc_default: "Atividade da conta",
+tx_desc_admin_credit: "Crédito de demonstração do administrador",
+tx_desc_admin_debit: "Débito de demonstração do administrador",
+tx_type_credit: "Crédito",
+tx_type_debit: "Débito",
+tx_status_pending: "Pendente",
+tx_status_approved: "Aprovado",
+tx_status_completed: "Concluído",
+tx_status_successful: "Bem-sucedido",
+tx_status_declined: "Recusado",
+tx_status_rejected: "Rejeitado",
+tx_status_reversed: "Estornado",
+tx_status_failed: "Falhado",
+tx_status_processing: "Em processamento",
+lbl_no_account: "Ainda não foi atribuída uma conta de demonstração",
+lbl_pending_setup: "Configuração pendente",
+lbl_not_assigned: "Não atribuído",
+lbl_active: "ativo",
+opt_no_eligible_acc: "Nenhuma conta de cliente ativa e aprovada disponível",
+empty_customer_tx: "Ainda não há atividade de conta ilustrativa disponível.",
+empty_admin_customers: "Não foram encontrados registos de clientes correspondentes.",
+empty_admin_accounts: "Nenhum registo de conta encontrado.",
+empty_admin_tx: "Não foram encontradas transações ilustrativas.",
+empty_customer_history: "Não foi encontrado histórico de transações ilustrativas.",
+msg_inactivity_signed_out: "A sua sessão foi encerrada após 3 minutos de inatividade.",
+msg_deleted_customer_access: "Esta conta de cliente foi eliminada e já não pode iniciar sessão.",
+msg_restricted_access: "O acesso do cliente está {status}. Contacte o administrador do protótipo.",
+msg_unverified_profile: "Não foi possível verificar o estado do seu perfil. Contacte o administrador do protótipo.",
+msg_signing_in: "A iniciar sessão…",
+msg_unable_load_account: "Não foi possível carregar a sua conta.",
+msg_submitting_reg: "A submeter o seu registo…",
+msg_invalid_reg_fields: "Preencha todos os campos e utilize uma palavra-passe com pelo menos 8 caracteres.",
+msg_reg_submitted_confirm_signin: "Registo submetido. Confirme o seu endereço de e-mail e inicie sessão para verificar a aprovação.",
+msg_reg_submitted_check_email: "Registo submetido. Verifique o seu e-mail e clique na ligação de confirmação. Depois, volte aqui e inicie sessão.",
+msg_unable_connect: "Não foi possível ligar. Atualize a página e tente novamente.",
+msg_invalid_transfer_input: "Introduza o nome da conta, o número da conta e um valor superior a zero.",
+msg_submitting_transfer: "A submeter pedido ilustrativo…",
+msg_transfer_submitted: "O seu pedido de transferência aguarda revisão do administrador. Nenhum dinheiro foi enviado ou deduzido.",
+msg_unable_submit_transfer: "Não foi possível submeter o pedido.",
+msg_customer_refreshed: "Informações da conta de demonstração atualizadas.",
+msg_records_refreshed: "Registos atualizados.",
+msg_select_approved_account: "Selecione uma conta de cliente aprovada.",
+msg_invalid_datetime: "Selecione uma data e hora válidas.",
+msg_invalid_amount: "Introduza um valor válido superior a zero.",
+msg_insufficient_debit: "Saldo insuficiente para debitar {amount}. O saldo de demonstração disponível é {balance}.",
+msg_adding_debit: "A adicionar débito ilustrativo…",
+msg_adding_credit: "A adicionar crédito ilustrativo…",
+msg_debit_added: "Débito ilustrativo adicionado com sucesso.{newBal} Nenhum dinheiro real foi transferido.",
+msg_credit_added: "Crédito ilustrativo adicionado com sucesso.{newBal} Nenhum dinheiro real foi depositado.",
+msg_new_demo_balance: " Novo saldo de demonstração: {balance}.",
+msg_unable_add_debit: "Não foi possível adicionar o débito ilustrativo.",
+msg_unable_add_credit: "Não foi possível adicionar o crédito ilustrativo.",
+msg_customer_deleted: "Conta de cliente eliminada e acesso de início de sessão bloqueado.",
+msg_unable_delete_customer: "Não foi possível eliminar a conta do cliente.",
+msg_tx_deleted: "Registo de transação ilustrativa eliminado.",
+msg_unable_delete_tx: "Não foi possível eliminar a transação.",
+msg_unable_load_history: "Não foi possível carregar o histórico de transações.",
+msg_reg_status_updated: "Registo de cliente: {status}.",
+msg_unable_update_reg: "Não foi possível atualizar o registo.",
+msg_updating_access: "A atualizar acesso do cliente: {status}…",
+msg_access_updated: "Acesso do cliente: {status}.",
+msg_unable_update_access: "Não foi possível atualizar o acesso do cliente.",
+msg_tx_reviewed: "Pedido de demonstração marcado como {status}.",
+msg_unable_review_tx: "Não foi possível rever este pedido.",
+confirm_delete_customer: "Tem a certeza de que pretende eliminar permanentemente a conta de {customer} e bloquear imediatamente o acesso? Isto removerá o perfil, a conta e o histórico de transações.",
+confirm_delete_tx: "Tem a certeza de que pretende eliminar permanentemente este registo de transação ilustrativa?",
+confirm_review_tx: "Tem a certeza de que pretende marcar este pedido de demonstração como {status}?",
+confirm_access_change: "Tem a certeza de que pretende {action} o acesso de protótipo deste cliente?",
+action_reactivate: "reativar",
+action_suspend: "suspender",
+action_deactivate: "desativar",
+btn_view_details: "Ver detalhes",
+btn_approve: "Aprovar",
+btn_reject: "Rejeitar",
+btn_suspend: "Suspender",
+btn_deactivate: "Desativar",
+btn_reactivate: "Reativar",
+btn_delete_account: "Eliminar conta",
+btn_delete: "Eliminar",
+btn_approve_demo: "Aprovar demo",
+btn_decline: "Recusar",
+btn_reverse_demo: "Estornar demo"
+},
+th: {
+brand_sub: "ธนาคารส่วนบุคคล.",
+status_default: "การเข้าถึงลูกค้าที่ปลอดภัย",
+status_customer: "การเข้าถึงตัวอย่างลูกค้า",
+status_admin: "การเข้าถึงผู้ดูแลระบบ",
+sign_out: "ออกจากระบบ",
+welcome_eyebrow: "มุมมองการเงินที่ชัดเจนยิ่งขึ้น",
+welcome_h1: "บริการธนาคารที่เป็นส่วนตัวกว่าที่เคย",
+welcome_p: "เข้าถึงข้อมูลบัญชีของคุณผ่านประสบการณ์ที่ออกแบบมาเพื่อคุณโดยเฉพาะ",
+feat_1: "การเข้าถึงบัญชีลูกค้าส่วนตัว",
+feat_2: "รายการเคลื่อนไหวบัญชีในที่เดียว",
+feat_3: "คำขอที่ตรวจสอบโดยผู้ดูแลระบบ",
+welcome_foot: "Horizon Bank · ตัวอย่างพอร์ทัลลูกค้า",
+auth_eyebrow: "ยินดีต้อนรับสู่ Horizon",
+login_title: "ลงชื่อเข้าใช้บัญชีของคุณ",
+login_sub: "กรอกรายละเอียดเพื่อดำเนินการต่อ",
+reg_title: "เปิดบัญชี",
+reg_sub: "กรอกข้อมูลด้านล่างเพื่อส่งการลงทะเบียน",
+tab_login: "ลงชื่อเข้าใช้",
+tab_register: "เปิดบัญชี",
+lbl_email: "อีเมล",
+lbl_password: "รหัสผ่าน",
+btn_login: "ลงชื่อเข้าใช้อย่างปลอดภัย",
+lbl_fullname: "ชื่อ-นามสกุล",
+lbl_phone: "หมายเลขโทรศัพท์",
+lbl_create_password: "สร้างรหัสผ่าน",
+btn_register: "ส่งการลงทะเบียน",
+reg_disclaimer: "ต้นแบบนี้ไม่ใช่สถาบันการเงินที่ได้รับอนุญาต การลงทะเบียนจะได้รับการตรวจสอบก่อนเปิดใช้งานการเข้าถึงตัวอย่าง",
+forbes_note: "Horizon ได้รับการจัดอันดับให้เป็นหนึ่งในธนาคารที่ดีที่สุดในโลกประจำปี 2026 โดย Forbes จากความมุ่งมั่นต่อลูกค้าและความน่าเชื่อถือ",
+status_eyebrow: "สถานะการลงทะเบียน",
+pending_h1: "การลงทะเบียนของคุณกำลังรอการอนุมัติ",
+pending_p: "ขอบคุณที่ลงทะเบียนกับ Horizon Bank อีเมลของคุณได้รับการยืนยันแล้วและกำลังรอการอนุมัติจากผู้ดูแลระบบ",
+pending_msg: "การลงทะเบียนของคุณอยู่ระหว่างการตรวจสอบ",
+rejected_h1: "ไม่สามารถอนุมัติการลงทะเบียนนี้ได้",
+rejected_p: "การลงทะเบียนของคุณไม่ได้รับการอนุมัติ โปรดติดต่อผู้ดูแลระบบต้นแบบเพื่อขอข้อมูลเพิ่มเติม",
+cust_eyebrow: "ธนาคารทางอินเทอร์เน็ตสำหรับลูกค้า",
+cust_welcome: "ยินดีต้อนรับ",
+cust_sub: "ภาพรวมบัญชีของคุณ",
+btn_refresh_info: "รีเฟรชข้อมูล",
+lbl_balance: "ยอดคงเหลือในบัญชี",
+lbl_acc_type: "ประเภทบัญชี",
+lbl_acc_record: "ข้อมูลบัญชี",
+lbl_acc_status: "สถานะบัญชี",
+lbl_profile_ver: "การยืนยันโปรไฟล์",
+tx_req_h2: "คำขอโอนเงิน",
+tx_req_tagline: "ธนาคารส่วนบุคคลที่ยังคงความใส่ใจ",
+lbl_to_name: "ชื่อบัญชี",
+lbl_to_num: "เลขที่บัญชี",
+lbl_amount_usd: "จำนวนเงิน (USD)",
+btn_submit_req: "ส่งคำขอ",
+tx_disclaimer: "ส่งและรับเงินโดยตรงจากบัญชีของคุณผ่าน Horizon Bank Internet Banking และ Mobile Banking",
+recent_act_h2: "ความเคลื่อนไหวบัญชีล่าสุด",
+records_label: "บันทึก",
+th_date: "วันที่และเวลา",
+th_desc: "รายละเอียด / ผู้รับ",
+th_type: "ประเภท",
+th_amount: "จำนวนเงิน",
+th_status: "สถานะ",
+loading_act: "กำลังโหลดความเคลื่อนไหวบัญชี…",
+admin_eyebrow: "การดูแลระบบ · ต้นแบบ",
+admin_h1: "ภาพรวมผู้ดูแลระบบ",
+admin_sub: "ตรวจสอบการลงทะเบียนตัวอย่างและข้อมูลลูกค้าจำลอง",
+btn_refresh_records: "รีเฟรชข้อมูล",
+stat_total_cust: "ลูกค้าทั้งหมด",
+stat_pending_reg: "การลงทะเบียนที่รออนุมัติ",
+stat_approved_cust: "ลูกค้าที่อนุมัติแล้ว",
+stat_pending_tx: "คำขอทำรายการที่รอดำเนินการ",
+cust_reg_h2: "การลงทะเบียนลูกค้า",
+review_status_sub: "ตรวจสอบและอัปเดตสถานะ",
+search_cust_ph: "ค้นหาชื่อ อีเมล หรือเลขที่บัญชี",
+loading_profiles: "กำลังโหลดโปรไฟล์ลูกค้า…",
+acc_records_h2: "บันทึกบัญชี",
+th_customer: "ลูกค้า",
+th_acc_name: "ชื่อบัญชี",
+th_acc_num: "เลขที่บัญชี",
+th_illus_bal: "ยอดคงเหลือจำลอง",
+loading_accs: "กำลังโหลดบันทึกบัญชี…",
+adj_heading_credit: "เพิ่มเครดิตจำลอง",
+adj_heading_debit: "เพิ่มเดบิตจำลอง",
+adj_sub: "ผู้ดูแลระบบเท่านั้น · ยอดเงินจำลอง",
+lbl_sel_acc: "เลือกบัญชีลูกค้า",
+opt_choose_acc: "เลือกบัญชีลูกค้าที่อนุมัติแล้ว",
+lbl_amt_credit: "จำนวนเครดิต (USD)",
+lbl_amt_debit: "จำนวนเดบิต (USD)",
+lbl_desc: "รายละเอียด",
+btn_adj_credit: "เพิ่มเครดิตจำลอง",
+btn_adj_debit: "เพิ่มเดบิตจำลอง",
+fineprint_credit: "อัปเดตเฉพาะข้อมูลจำลองเท่านั้น ไม่มีการฝากหรือโอนเงินจริง",
+fineprint_debit: "อัปเดตเฉพาะข้อมูลจำลองเท่านั้น การเดบิตจะถูกบล็อกหากยอดคงเหลือไม่เพียงพอ",
+recent_tx_h2: "รายการเดินบัญชีจำลองล่าสุด",
+th_cust_id: "รหัสลูกค้า",
+th_rec_name: "ชื่อบัญชีผู้รับ",
+th_rec_num: "เลขที่บัญชีผู้รับ",
+th_review: "ตรวจสอบ",
+loading_tx: "กำลังโหลดรายการ…",
+details_eyebrow: "บันทึกข้อมูลลูกค้า · ต้นแบบ",
+btn_close: "ปิด",
+loading_details: "กำลังโหลดรายละเอียดลูกค้า…",
+footer_text: "ระบบรักษาความปลอดภัยขั้นสูงและการเฝ้าติดตามตลอด 24/7 เพื่อปกป้องบัญชีและข้อมูลส่วนบุคคลของคุณ",
+tx_desc_transfer_request: "คำขอโอนเงิน",
+tx_desc_reversal: "การยกเลิกรายการ",
+tx_desc_default: "ความเคลื่อนไหวบัญชี",
+tx_desc_admin_credit: "เครดิตจำลองโดยผู้ดูแลระบบ",
+tx_desc_admin_debit: "เดบิตจำลองโดยผู้ดูแลระบบ",
+tx_type_credit: "เครดิต",
+tx_type_debit: "เดบิต",
+tx_status_pending: "รอดำเนินการ",
+tx_status_approved: "อนุมัติแล้ว",
+tx_status_completed: "เสร็จสมบูรณ์",
+tx_status_successful: "สำเร็จ",
+tx_status_declined: "ถูกปฏิเสธ",
+tx_status_rejected: "ถูกปฏิเสธ",
+tx_status_reversed: "ยกเลิกแล้ว",
+tx_status_failed: "ล้มเหลว",
+tx_status_processing: "กำลังดำเนินการ",
+lbl_no_account: "ยังไม่ได้กำหนดบัญชีจำลอง",
+lbl_pending_setup: "รอการตั้งค่า",
+lbl_not_assigned: "ยังไม่ได้กำหนด",
+lbl_active: "ใช้งานอยู่",
+opt_no_eligible_acc: "ไม่มีบัญชีลูกค้าที่อนุมัติและใช้งานได้",
+empty_customer_tx: "ยังไม่มีความเคลื่อนไหวบัญชีจำลอง",
+empty_admin_customers: "ไม่พบข้อมูลลูกค้าที่ตรงกัน",
+empty_admin_accounts: "ไม่พบบันทึกบัญชี",
+empty_admin_tx: "ไม่พบรายการเดินบัญชีจำลอง",
+empty_customer_history: "ไม่พบประวัติรายการจำลอง",
+msg_inactivity_signed_out: "คุณออกจากระบบอัตโนมัติเนื่องจากไม่มีการใช้งานเป็นเวลา 3 นาที",
+msg_deleted_customer_access: "บัญชีลูกค้านี้ถูกลบแล้วและไม่สามารถลงชื่อเข้าใช้ได้อีก",
+msg_restricted_access: "การเข้าถึงของลูกค้าอยู่ในสถานะ {status} โปรดติดต่อผู้ดูแลระบบต้นแบบ",
+msg_unverified_profile: "ไม่สามารถตรวจสอบสถานะโปรไฟล์ของคุณได้ โปรดติดต่อผู้ดูแลระบบต้นแบบ",
+msg_signing_in: "กำลังลงชื่อเข้าใช้…",
+msg_unable_load_account: "ไม่สามารถโหลดบัญชีของคุณได้",
+msg_submitting_reg: "กำลังส่งการลงทะเบียน…",
+msg_invalid_reg_fields: "โปรดกรอกข้อมูลให้ครบทุกช่องและใช้รหัสผ่านอย่างน้อย 8 ตัวอักษร",
+msg_reg_submitted_confirm_signin: "ส่งการลงทะเบียนแล้ว โปรดยืนยันอีเมลของคุณ จากนั้นลงชื่อเข้าใช้เพื่อตรวจสอบสถานะการอนุมัติ",
+msg_reg_submitted_check_email: "ส่งการลงทะเบียนแล้ว โปรดตรวจสอบอีเมลและคลิกลิงก์ยืนยัน จากนั้นกลับมาลงชื่อเข้าใช้",
+msg_unable_connect: "ไม่สามารถเชื่อมต่อได้ โปรดรีเฟรชและลองอีกครั้ง",
+msg_invalid_transfer_input: "กรอกชื่อบัญชี เลขที่บัญชี และจำนวนเงินที่มากกว่าศูนย์",
+msg_submitting_transfer: "กำลังส่งคำขอจำลอง…",
+msg_transfer_submitted: "คำขอโอนเงินของคุณกำลังรอผู้ดูแลระบบตรวจสอบ ไม่มีการส่งหรือหักเงินจริง",
+msg_unable_submit_transfer: "ไม่สามารถส่งคำขอได้",
+msg_customer_refreshed: "รีเฟรชข้อมูลบัญชีจำลองแล้ว",
+msg_records_refreshed: "รีเฟรชข้อมูลแล้ว",
+msg_select_approved_account: "โปรดเลือกบัญชีลูกค้าที่อนุมัติแล้ว",
+msg_invalid_datetime: "โปรดเลือกวันที่และเวลาที่ถูกต้อง",
+msg_invalid_amount: "กรอกจำนวนเงินที่ถูกต้องซึ่งมากกว่าศูนย์",
+msg_insufficient_debit: "ยอดคงเหลือไม่เพียงพอสำหรับเดบิต
+
